@@ -1,0 +1,11 @@
+{
+	"id": "flk.local_terminus",
+	"name": "Local Terminus",
+	"version": "8.1",
+	"hide_version": false,
+	"authors": "flakalet"
+	"description": "Venture beyond the Eastern Retaining Wall",
+	"requirements": ["myr.chasing_wind", "regionkit"],
+	"requirements_names": ["Chasing Wind", "RegionKit"],
+	"checksum_override_version": false
+}

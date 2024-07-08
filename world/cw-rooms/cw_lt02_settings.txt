@@ -1,0 +1,21 @@
+Template: NONE
+DangerType: Blizzard
+CeilingDrips: 0
+RainIntensity: 1
+RumbleIntensity: 0
+WaveSpeed: 0.3882309
+WaveLength: 0.9441155
+WaveAmplitude: 1.443643E-06
+SecondWaveLength: 0.1666667
+SecondWaveAmplitude: 0
+Clouds: 0.7065217
+Grime: 0.2391304
+BkgDroneVolume: 0
+Palette: 33
+EffectColorA: 9
+EffectColorB: 3
+Effects: PixelShift-0.5-289-136, Fog-0.7826087-335-33, Bloom-0.2608696-6-54, Coldness-0.6195652-29-15, AboveCloudsView-0.4347826-455-593, 
+PlacedObjects: NoSpearStickZone><-33.07202><280.8413><-138~97, LanternOnStick><6913.075><193.0975><29~-108, LanternOnStick><7014.55><250.9874><-5~-175, ScavengerOutpost><6967.554><115.2106><-48~585~-161~466~0.9369066~87~23, SnowSource><222.2375><208.1996><Radial~473~204~132~193.6025~0.7717391~0.5978261, SnowSource><866.699><155.0195><Radial~214~388~50~86.60254~1~0.6739131, SnowSource><1451.981><478.9491><Radial~584~173~50~86.60254~1~0, SnowSource><2427.555><168.4564><Radial~557~64~50~86.60254~0.6413044~0, SnowSource><3395.196><176.5573><Radial~536~300~50~86.60254~0.5~0.173913, SnowSource><4395.621><208.0909><Radial~816~179~50~86.60254~0.5760869~0.4347826, SnowSource><5479.932><229.1671><Radial~862~109~50~86.60254~0.3913043~0.1304348, SnowSource><6475.174><262.1851><Radial~687~126~50~86.60254~0.7173913~0.4565217, SnowSource><7421.34><224.1198><Radial~571~51~50~86.60254~1~1, SnowSource><7759.063><617.6808><Radial~470~261~-375~-21.39746~1~0, SnowSource><6974.306><129.4501><Radial~79~107~50~86.60254~1~0.2391304, LanternOnStick><6997.388><311.3344><-25~-226, 
+AmbientSounds: OMNI><AM_ENV-NatWind.ogg><833.3021><652.5293><0.5><1, OMNI><AM_ENV-LightWind.ogg><647.051><654.0204><0.5217391><0.9021739, SPOT><AM_ENV-WallHum.ogg><44.60425><480.4207><0.3152174><1><57.60425><26.42065><-213.3553><272.6447><0><0.4260871, 
+FadePalette: 12, 0.1630435, 0.2065217, 0.2608696, 0.326087, 0.4565217, 0.5869565, 0.7826087, 1
+WetTerrain: OFF

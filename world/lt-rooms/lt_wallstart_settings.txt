@@ -1,0 +1,17 @@
+DangerType: Blizzard
+CeilingDrips: 0
+RumbleIntensity: 0.8369565
+WaveSpeed: 0.7569522
+WaveLength: 0.8715239
+WaveAmplitude: 0.00135277
+SecondWaveLength: 0.1666667
+SecondWaveAmplitude: 0
+Grime: 0.173913
+BkgDroneVolume: 0.3043478
+BkgDroneNoThreatVolume: 0.6195652
+Palette: 22
+EffectColorB: 0
+Effects: Bloom-0.3913043-20-20, Darkness-0.5978261-30-30, Moth-0.2934783-287-132, 
+PlacedObjects: LightSource><142.4683><575.6974><0.7934783~Environment~-183~217~50~86.60254~0~0~Fade~0.01086957~0, LanternOnStick><232.482><379.5509><-21~-142, LanternOnStick><189.5858><346.8859><8~-96, SeedCob><87.06122><465.6839><-398~-44~7~10, LightSource><683.8752><315.344><0.6630435~Environment~-5~73~50~86.60254~0~0~Fade~0.1521739~0, SnowSource><674.3665><534.1626><Radial~-4~57~50~86.60254~0.3478261~0.06521739, 
+AmbientSounds: OMNI><am_env-citytone.ogg><883.5206><316.3011><0.3369561><1, OMNI><am_env-wallhum.ogg><580.5277><168.9481><0.09782609><1.019565, SPOT><so_ind-weirdvent.ogg><581.1918><478.0565><0.173913><1><691.1918><313.0565><-27.35535><-24.35535><0.1956522><0.03478274, 
+WetTerrain: OFF
