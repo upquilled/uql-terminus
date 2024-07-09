@@ -5,7 +5,7 @@ RainIntensity: 0
 RumbleIntensity: 0
 WaveSpeed: 0.5
 WaveLength: 1
-WaveAmplitude: 0.003188187
+WaveAmplitude: 0.002869368
 SecondWaveLength: 0.1666667
 SecondWaveAmplitude: 0
 Clouds: 0.1413043
@@ -14,7 +14,7 @@ Palette: 33
 EffectColorA: 9
 EffectColorB: 0
 Effects: Bloom-0.6195652-20-20, Fog-0.5217391-304-75, 
-PlacedObjects: SnowSource><125.178><566.8411><Radial~201~-42~-70~-4.397461~0.2391304~0, DangleFruit><279.806><247.4515><3~124~2~3, DangleFruit><254.0784><219.6027><-209~52~2~3, LightFixture><812.1088><183.8583><RedLight~17.32051~-10~14, LightSource><521.8086><307.9421><0.5217391~Environment~244~143~-382~-60.39746~0~0~None~0.1195652~0, DataPearl><193.1052><467.3879><246~47~0~0~Misc~0, DataPearl><657.1786><428.66><0~0~0~0~Misc~0, 
+PlacedObjects: DangleFruit><279.806><247.4515><3~124~2~3, DangleFruit><254.0784><219.6027><-209~52~2~3, LightFixture><812.1088><183.8583><RedLight~17.32051~-10~14, LightSource><521.8086><307.9421><0.5217391~Environment~244~143~-382~-60.39746~0~0~None~0.1195652~0, DataPearl><193.1052><467.3879><246~47~0~0~Misc~0, DataPearl><657.1786><428.66><0~0~0~0~Misc~0, 
 AmbientSounds: OMNI><am_env-wallhum.ogg><743.7227><186.8019><0.2173913><1, OMNI><am_sub-blankstate.ogg><512.6206><299.9025><0.2391304><1, OMNI><am_ind-superstructure.ogg><797.0536><362.2124><0.2173913><0.7652174, 
 FadePalette: 1888, 0.5543478
 WetTerrain: OFF
