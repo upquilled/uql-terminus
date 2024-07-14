@@ -1,13 +1,13 @@
 DangerType: Blizzard
 CeilingDrips: 0
 RainIntensity: 1
-WaveSpeed: 0.2057692
-WaveLength: 0.8528846
-WaveAmplitude: 5.074576E-05
+WaveSpeed: 0.353458
+WaveLength: 0.926729
+WaveAmplitude: 1.651796E-10
 SecondWaveLength: 0.1666667
 SecondWaveAmplitude: 0
 Grime: 0.2826087
 Palette: 22
 Effects: Bloom-0.3913043-274-108, Darkness-0.5869565-0-0, 
-PlacedObjects: LightSource><490.3674><393.5881><0.4130435~Environment~0~100~50~86.60254~0~0~None~0.07608695~0, ColouredLightSource><492.1106><631.3934><-295~-296~E30000~65^11~0.5652174~False~0.5760869~0.4565217~0.3804348~Always~0~100, 
+PlacedObjects: LightSource><490.3674><393.5881><0.4130435~Environment~-3~213~50~86.60254~0~0~None~0.07608695~0, ColouredLightSource><492.1106><631.3934><-295~-296~E30000~65^11~0.5652174~False~0.5760869~0.4565217~0.3804348~Always~0~100, 
 WetTerrain: OFF
