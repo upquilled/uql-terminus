@@ -1,7 +1,7 @@
 Template: LT_SettingsTemplate_Fabrik
-WaveSpeed: 0.4289069
+WaveSpeed: 0.396298
 WaveLength: 0.9644535
-WaveAmplitude: 0.1013756
+WaveAmplitude: 0.2752885
 SecondWaveLength: 0
 SecondWaveAmplitude: 0
 Clouds: 0
