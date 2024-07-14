@@ -3,7 +3,7 @@ Subregion: Outer Expanse
 Subregion: Facility Roots (Eastern Intake)
 pupSpawnChance: 0.05
 Room Setting Templates: WallTop, Fabrik
-earlyCycleChance: 0.1
+earlyCycleChance: 0.05
 overseersSpawnChance: 0.8
 overseersColorOverride(0.7, 0.7, 0.7): 1
 overseersMin: 1
