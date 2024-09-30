@@ -1,1 +1,1 @@
-[ADD]GATE_CW_LT : 1 : 1
+[ADD]GATE_MF_JX : 3 : 3
