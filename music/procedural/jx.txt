@@ -12,14 +12,23 @@ TH_JX - NIGHTPLUCK : NEUTRAL
 TH_JX - CHORDS : NEUTRAL
 TH_JX - NIGHTCHORDS : NEUTRAL
 TH_JX - MARIMBA : NEUTRAL
+TH_JX - CIMKICK : NEUTRAL
+TH_JX - CIMBITS : NEUTRAL
+TH_JX - CIMPERC : NEUTRAL
+TH_JX - CIMHATS : NEUTRAL
+TH_JX - CIMSPURS : NEUTRAL
+TH_JX - CIMBELLS : NEUTRAL
+TH_JX - CIMBASS : NEUTRAL
+TH_JX - CIMPAD : NEUTRAL
+TH_JX - CIMCHORDS : NEUTRAL
 
-Layer : TH_JX - KICK, TH_JX - PERC, TH_JX - SHAKER
-Layer : TH_JX - KICK, TH_JX - PERC, TH_JX - SHAKER
-Layer : TH_JX - KICK, TH_JX - PERC, TH_JX - SHAKER
-Layer : TH_JX - KICK, TH_JX - PERC, TH_JX - SHAKER, TH_JX - NOISE, TH_JX - MARIMBA, {D}TH_JX - BASS, {N}TH_JX - NIGHTBASS
-Layer : TH_JX - KICK, TH_JX - PERC, TH_JX - SHAKER, TH_JX - NOISE, TH_JX - MARIMBA, {D}TH_JX - BASS, {N}TH_JX - NIGHTBASS
-Layer : TH_JX - MARIMBA, {D}TH_JX - ARPS, {N}TH_JX - NIGHTARPS
-Layer : {D}TH_JX - BASS, {N}TH_JX - NIGHTBASS
-Layer : TH_JX - KICK, {D}TH_JX - ARPS, {N}TH_JX - NIGHTARPS, {D}TH_JX - BEAT, {N}TH_JX - NIGHTBEAT, {D}TH_JX - CHORDS, {N}TH_JX - NIGHTCHORDS
-Layer : TH_JX - KICK, {D}TH_JX - ARPS, {N}TH_JX - NIGHTARPS, {D}TH_JX - BEAT, {N}TH_JX - NIGHTBEAT, {D}TH_JX - CHORDS, {N}TH_JX - NIGHTCHORDS, {D}TH_JX - PLUCK, {N}TH_JX - NIGHTPLUCK
-Layer : {D}TH_JX - PLUCK, {N}TH_JX - NIGHTPLUCK, TH_JX - LEAD
+Layer : {Local Terminus}TH_JX - KICK, {Local Terminus}TH_JX - PERC, {Local Terminus}TH_JX - SHAKER, {Cyclic Intake Manifold}TH_JX - CIMKICK
+Layer : {Local Terminus}TH_JX - KICK, {Local Terminus}TH_JX - PERC, {Local Terminus}TH_JX - SHAKER, {Cyclic Intake Manifold}TH_JX - CIMPERC, {Cyclic Intake Manifold}TH_JX - CIMBITS
+Layer : {Local Terminus}TH_JX - KICK, {Local Terminus}TH_JX - PERC, {Local Terminus}TH_JX - SHAKER, {Cyclic Intake Manifold}TH_JX - CIMBASS
+Layer : {Local Terminus}TH_JX - KICK, {Local Terminus}TH_JX - PERC, {Local Terminus}TH_JX - SHAKER, {Local Terminus}TH_JX - NOISE, {Local Terminus}TH_JX - MARIMBA, {Local Terminus}{D}TH_JX - BASS, {Local Terminus}{N}TH_JX - NIGHTBASS, {Cyclic Intake Manifold}TH_JX - CIMSPURS, {Cyclic Intake Manifold}TH_JX - CIMCHORDS
+Layer : {Local Terminus}TH_JX - KICK, {Local Terminus}TH_JX - PERC, {Local Terminus}TH_JX - SHAKER, {Local Terminus}TH_JX - NOISE, {Local Terminus}TH_JX - MARIMBA, {Local Terminus}{D}TH_JX - BASS, {Local Terminus}{N}TH_JX - NIGHTBASS, {Cyclic Intake Manifold}TH_JX - CIMCHORDS, {Cyclic Intake Manifold}TH_JX - CIMSPURS
+Layer : {Local Terminus}TH_JX - MARIMBA, {Local Terminus}{D}TH_JX - ARPS, {Local Terminus}{N}TH_JX - NIGHTARPS, {Cyclic Intake Manifold}TH_JX - CIMPERC, {Cyclic Intake Manifold}TH_JX - CIMBITS
+Layer : {Local Terminus}{D}TH_JX - BASS, {Local Terminus}{N}TH_JX - NIGHTBASS, {Cyclic Intake Manifold}TH_JX - CIMBELLS, {Cyclic Intake Manifold}TH_JX - CIMPAD, {Cyclic Intake Manifold}TH_JX - CIMHATS
+Layer : {Local Terminus}TH_JX - KICK, {Local Terminus}{D}TH_JX - ARPS, {Local Terminus}{N}TH_JX - NIGHTARPS, {Local Terminus}{D}TH_JX - BEAT, {Local Terminus}{N}TH_JX - NIGHTBEAT, {Local Terminus}{D}TH_JX - CHORDS, {Local Terminus}{N}TH_JX - NIGHTCHORDS, {Cyclic Intake Manifold}TH_JX - CIMBELLS, {Cyclic Intake Manifold}TH_JX - CIMPAD, {Cyclic Intake Manifold}TH_JX - CIMHATS
+Layer : {Local Terminus}TH_JX - KICK, {Local Terminus}{D}TH_JX - ARPS, {Local Terminus}{N}TH_JX - NIGHTARPS, {Local Terminus}{D}TH_JX - BEAT, {Local Terminus}{N}TH_JX - NIGHTBEAT, {Local Terminus}{D}TH_JX - CHORDS, {Local Terminus}{N}TH_JX - NIGHTCHORDS, {Local Terminus}{D}TH_JX - PLUCK, {Local Terminus}{N}TH_JX - NIGHTPLUCK, {Cyclic Intake Manifold}TH_JX - CIMBELLS, {Cyclic Intake Manifold}TH_JX - CIMPAD, {Cyclic Intake Manifold}TH_JX - CIMHATS
+Layer : {Local Terminus}{D}TH_JX - PLUCK, {Local Terminus}{N}TH_JX - NIGHTPLUCK, {Local Terminus}TH_JX - LEAD

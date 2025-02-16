@@ -8,9 +8,9 @@ SecondWaveLength: 0.1666667
 SecondWaveAmplitude: 0
 Clouds: 0.75
 Grime: 0.3586957
-Palette: 12
+Palette: 1800
 EffectColorB: 0
-Effects: Bloom-0.6630435-148-23, WaterDepth-0.1521739-49-68, SilenceWater-0-22-101, MurkyWater-0.8804348-294-88, Darkness-0.75-104-139, FairyParticles-0.01086957-329-132, 
-PlacedObjects: FairyParticleSettings><130.715><20.6969><-357~37.66022~0~2.717391~1.630435~0.06521739~1~1~114.3477~234.3478~40~76.08695~5~14.34791~180~180~0.6739131~0.8478261~0.1304348~0.09782609~0.1630435~0.2282609~0.5~0.4673913~6.086957~Pixel~SIN_IO~QUAD_IN~25.65215~0.173913~0, CommonGateData><595.6669><250.5681><406~-33~False~False~False~False~False~False~True~True~0.6847826~0.1413043~0.6195652, WaterGateData><532.8402><199.8798><119~-122~False~True~Nrml~Nrml, ElectricGateData><525.9491><-34.23083><64~19~False~True~True~True~True~True~True~False~0~1~False~0~1~0.5, 
+Effects: Bloom-0.6630435-148-23, WaterDepth-0.1521739-49-68, MurkyWater-0.8804348-294-88, Darkness-0.75-104-139, FairyParticles-0.01086957-329-132, 
+PlacedObjects: FairyParticleSettings><130.715><20.6969><-114~122.6602~0~2.717391~1.630435~0.06521739~1~1~114.3477~234.3478~40~76.08695~5~14.34791~180~180~0.6739131~0.8478261~0.1304348~0.09782609~0.1630435~0.2282609~0.5~0.4673913~6.086957~Pixel~SIN_IO~QUAD_IN~25.65215~0.173913~0, CommonGateData><595.6669><250.5681><406~-33~False~False~False~False~False~False~True~True~0.6847826~0.1413043~0.6195652, WaterGateData><532.8402><199.8798><147~65~False~True~Nrml~Nrml, ElectricGateData><525.9491><-34.23083><-226~175~False~True~True~True~True~True~True~False~0~1~False~0~1~0.5, InsectGroup><583.5366><-164.9467><109~111~0~0~WaterGlowworm~0.4347826, 
 AmbientSounds: OMNI><am_env-subterr.ogg><587.9728><568.8018><0.2065217><1, OMNI><jx_treatment_facility.ogg><425.5501><620.5074><0.173913><0.1586957, OMNI><am_win-subwnd.ogg><805.7993><441.0562><0.173913><1, OMNI><so_wat-lildrips.ogg><811.1068><554.6691><0.2934783><1, OMNI><so_wat-moredrips.ogg><669.4153><325.6812><0.3369565><1, OMNI><so_wat-properdrips.ogg><504.0842><455.3881><0.3152174><1, 
-FadePalette: 31, 0.2608696
+FadePalette: 12, 0.01086957

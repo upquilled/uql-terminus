@@ -9,12 +9,12 @@ SecondWaveLength: 0.1666667
 SecondWaveAmplitude: 0
 Clouds: 0
 Grime: 0.08695652
-BkgDroneVolume: 0
+BkgDroneVolume: 0.3
 BkgDroneNoThreatVolume: 1
 RandomItemDensity: 0.5
 RandomItemSpearChance: 0.2
 WaterReflectionAlpha: 0.6847826
-Palette: 1310
+Palette: 1801
 EffectColorA: 21
 EffectColorB: 21
 Effects: WaterViscosity-0.2282609-438-455, WaterDepth-0-0-0, Fog-0.6195652-30-30, DirtyWater-0.3043478-311-38, Bloom-0.3913043-5-57, Darkness-0.5978261-246-307, Moth-0.2934783-287-132, 
