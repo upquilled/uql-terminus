@@ -1,3 +1,22 @@
+-- GATES --
+
+GATE_MF_JX: 2yce
+
+-- MOSS FIELDS --
+
+MF_JXTRANS01: 2yce << Myrmice
+MF_JXTRANS02: 2yce << Myrmice
 MF_JXCAVE01: 2yce
 MF_JXCAVE02: ribulet.real, 2yce
-GATE_MF_JX: 2yce
+
+MF_S06: 2yce << Myrmice
+
+-- LOCAL TERMINUS --
+
+JX_FALL01: 2yce
+JX_FALL02: 2yce
+JX_FALL03: 2yce
+JX_F_A01: 2yce
+JX_F_A02: 2yce
+
+JX_F_S01: 2yce
