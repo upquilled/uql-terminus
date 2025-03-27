@@ -12,4 +12,4 @@ WaterReflectionAlpha: 0.0326087
 Palette: 1802
 Effects: WaterDepth-1-20-20, ReplaceEffectColorB-0-472-440-Color-0.08695652-0.06521739-0.09782609, ReplaceEffectColorA-0-766-423-Color-0.1847826-0.1413043-0.1630435, FairyParticles-0.02173913-341-192, Darkness-0.1413043-30-30, 
 PlacedObjects: FairyParticleSettings><167.3923><347.3595><723~-392.3397~0~2.717391~1.630435~0.06521739~1~1~114.3477~234.3478~40~76.08695~5~14.34791~0~360~0.6739131~0.8478261~0.1304348~0.09782609~0.1630435~0.2282609~0.5~0.4673913~6.086957~Pixel~SIN_IO~QUAD_IN~25.65215~0.173913~0, 
-AmbientSounds: OMNI><am_sub-blankstate.ogg><571.0187><591.4491><0.3152174><0.1586957, OMNI><am_sub-cavetone.ogg><618.057><315.3024><0.3369565><1.9, OMNI><am_sub-mysticcave2.ogg><756.4731><521.3018><0.1956522><1, 
+AmbientSounds: OMNI><am_sub-blankstate.ogg><571.0187><591.4491><0.3152174><0.1586957, OMNI><am_sub-cavetone.ogg><618.057><315.3024><0.3369565><1.9, OMNI><am_sub-mysticcave2.ogg><756.4731><521.3018><0.1956522><1, OMNI><jx-kappa.ogg><733.8121><294.1814><0.1195652><1, OMNI><jx-lambda.ogg><739.9229><213.3995><0.2065217><1, 

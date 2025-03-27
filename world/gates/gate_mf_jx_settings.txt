@@ -8,6 +8,7 @@ SecondWaveLength: 0.1666667
 SecondWaveAmplitude: 0
 Clouds: 0.75
 Grime: 0.3586957
+WaterReflectionAlpha: 0.04347826
 Palette: 1800
 EffectColorB: 0
 Effects: Bloom-0.6630435-148-23, WaterDepth-0.1521739-49-68, MurkyWater-0.8804348-294-88, Darkness-0.75-104-139, FairyParticles-0.01086957-329-132, 

@@ -2,6 +2,7 @@ Template: NONE
 DangerType: Flood
 Grime: 0.1630435
 BkgDroneVolume: 0
+WaterReflectionAlpha: 0
 Palette: 345
 EffectColorA: 9
 Effects: Darkness-0.6413044-20-20, ReplaceEffectColorB-0.2934783-398-90-Color-0.75-0.5978261-0.6195652, 

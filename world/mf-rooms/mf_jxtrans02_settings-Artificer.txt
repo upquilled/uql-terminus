@@ -3,6 +3,7 @@ DangerType: Flood
 CeilingDrips: 0.7826087
 WaveSpeed: 0.6521739
 Grime: 0.1630435
+WaterReflectionAlpha: 0
 BkgDroneVolume: 0
 Palette: 13
 EffectColorA: 9
