@@ -4,7 +4,7 @@ Subregion: Cyclic Intake Manifold
 pupSpawnChance: 0.05
 Room Setting Templates: WallTop, Fabrik, Fissures, Fissures Alt, Fiscave
 earlyCycleChance: 0.05
-overseersSpawnChance: 0.6
+overseersSpawnChance: 1
 overseersColorOverride(0.7, 0.7, 0.7): 1
 overseersMin: 1
 overseersMax: 5
