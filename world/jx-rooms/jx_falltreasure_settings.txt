@@ -1,0 +1,12 @@
+Template: jx_settingstemplate_fissures
+DangerType: Flood
+WaveLength: 0.9170448
+WaveAmplitude: 0
+SecondWaveLength: 0
+SecondWaveAmplitude: 0
+RandomItemDensity: 0.7065217
+RandomItemSpearChance: 0.5152173
+Palette: 1802
+Effects: SilenceWater-0.4891304-20-20, WaterDepth-0.08695652-52-68, Darkness-0-30-30, 
+PlacedObjects: HangingPearls><572.8566><420.0808><, HangingPearls><681.1846><457.689><, ScavengerTreasury><307.4972><314.55><302~-29, LanternOnStick><612.2742><320.1985><-20~-117, ColouredLightSource><667.1804><377.4138><-467~-454~FFFFFF~13^-23~1~False~0.5~0~0.5~Always~0~100, ColouredLightSource><589.4773><351.1987><-487~-378~FFFFFF~32^4~1~False~0.5~0~0.5~Always~0~100, FairyParticleSettings><139.1994><366.9845><-443~-31.33972~0~2.717391~1.630435~0.06521739~1~1~114.3477~234.3478~40~76.08695~5~14.34791~180~180~0.6739131~0.8478261~0.1304348~0.09782609~0.1630435~0.2282609~0.5~0.4673913~6.086957~Pixel~SIN_IO~QUAD_IN~25.65215~0.173913~0, DataPearl><161.8><282.2517><-17.00002~-277~0~0~Misc~0, ReliableSpear><88.16882><281.8172><, Lantern><134.5195><278.699><88~121~4~9, Lantern><672.1418><192.891><-393~-224~4~9, FirecrackerPlant><726.9499><181.7568><-184~-112~2~3, Physalis><811.1093><364.3921><0~0~2~3, InsectGroup><528.1005><385.6729><251~38~0~0~Ant~0.5, InsectGroup><841.538><147.3036><-1~101~0~0~WaterGlowworm~0.5, 
+AmbientSounds: OMNI><weird deep hole.wav><713.6094><447.1077><0.09782609><1, SPOT><am_ind-50hz.ogg><655.1135><184.1461><0.1847826><1><587.1135><353.1461><-24.35535><-19.35535><0><0.1, SPOT><am_ind-50hz.ogg><825.602><226.1345><0.173913><1><670.602><385.1345><-22.35535><-27.35535><0><0.1, SPOT><watergurgleloop2.wav><751.05><474.2522><0.2391304><1.802174><833.05><124.2522><-35.35534><-35.35534><0><0.1, 

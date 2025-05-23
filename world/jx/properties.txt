@@ -8,3 +8,5 @@ overseersSpawnChance: 1
 overseersColorOverride(0.7, 0.7, 0.7): 1
 overseersMin: 1
 overseersMax: 5
+Room_Attr: JX_FALL04: Scavenger-Like,
+Room_Attr: JX_FALLTREASURE: Scavenger-Like,
