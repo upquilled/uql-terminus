@@ -1,4 +1,4 @@
-Template: JX_SettingsTemplate_Fissures
+Template: jx_settingstemplate_fissures
 DangerType: None
 CeilingDrips: 1
 WaveSpeed: 0.5
