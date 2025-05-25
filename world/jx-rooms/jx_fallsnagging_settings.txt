@@ -1,0 +1,7 @@
+Template: jx_settingstemplate_fissures
+DangerType: Flood
+CeilingDrips: 0.6521739
+Palette: 1802
+Effects: Darkness-0-20-20, Fog-0.4565217-30-30, 
+PlacedObjects: FairyParticleSettings><266.6188><262.6509><-576~26.66025~0~2.717391~1.630435~0.06521739~1~1~114.3477~234.3478~40~76.08695~5~14.34791~180~180~0.6739131~0.8478261~0.1304348~0.09782609~0.1630435~0.2282609~0.5~0.4673913~6.086957~Pixel~SIN_IO~QUAD_IN~25.65215~0.173913~0, CosmeticSlimeMold2><675.0952><268.6234><73~20, SlimeMold><635.6507><246.5764><-142~-208~2~3, SlimeMold><720.8506><292.6171><-18~201~2~3, CosmeticSlimeMold><667.3005><269.2358><0~100, 
+AmbientSounds: OMNI><weird deep hole.wav><719.9285><448.6597><0.07608695><1, OMNI><jx-treatment_facility.ogg><709.2214><351.4479><0.06521739><1.293478, OMNI><jx-pipestream.ogg><550.569><335.665><0.06521739><0.8630434, 

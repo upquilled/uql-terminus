@@ -1,14 +1,15 @@
 Subregion: Fissures
 Subregion: Local Terminus
 Subregion: Cyclic Intake Manifold
+Subregion: Outer Expanse
 pupSpawnChance: 0.05
 Room Setting Templates: WallTop, Fabrik, Fissures, Fissures Alt, Fiscave
 earlyCycleChance: 0.05
-overseersSpawnChance: 1
+overseersSpawnChance: 0
 overseersColorOverride(0.7, 0.7, 0.7): 1
+guideColor: 0.7, 0.7, 0.7
 overseersMin: 1
 overseersMax: 5
-Room_Attr: JX_FALL04: Scavenger-Stay,
+Room_Attr: JX_FALL04: Scavenger-Like,
 Room_Attr: JX_FALL05: Scavenger-Like,
-Room_Attr: JX_FALL06: Scavenger-Like,
 Room_Attr: JX_FALLTREASURE: Scavenger-Stay,
