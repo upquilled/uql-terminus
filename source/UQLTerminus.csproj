@@ -1,0 +1,120 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <!-- BepInEx/core DLLs -->
+    <Reference Include="BepInEx">
+      <HintPath>../BepInEx/core/BepInEx.dll</HintPath>
+    </Reference>
+    <Reference Include="BepInEx.Core">
+      <HintPath>../BepInEx/core/BepInEx.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="BepInEx.Configuration">
+      <HintPath>../BepInEx/core/BepInEx.Configuration.dll</HintPath>
+    </Reference>
+    <Reference Include="BepInEx.Logging">
+      <HintPath>../BepInEx/core/BepInEx.Logging.dll</HintPath>
+    </Reference>
+    <Reference Include="BepInEx.Preloader">
+      <HintPath>../BepInEx/core/BepInEx.Preloader.dll</HintPath>
+    </Reference>
+    <Reference Include="0Harmony">
+      <HintPath>../BepInEx/core/0Harmony.dll</HintPath>
+    </Reference>
+    <Reference Include="Mono.Cecil">
+      <HintPath>../BepInEx/core/Mono.Cecil.dll</HintPath>
+    </Reference>
+    <Reference Include="Mono.Cecil.Mdb">
+      <HintPath>../BepInEx/core/Mono.Cecil.Mdb.dll</HintPath>
+    </Reference>
+    <Reference Include="Mono.Cecil.Pdb">
+      <HintPath>../BepInEx/core/Mono.Cecil.Pdb.dll</HintPath>
+    </Reference>
+    <Reference Include="Mono.Cecil.Rocks">
+      <HintPath>../BepInEx/core/Mono.Cecil.Rocks.dll</HintPath>
+    </Reference>
+    <Reference Include="MonoMod.RuntimeDetour">
+      <HintPath>../BepInEx/core/MonoMod.RuntimeDetour.dll</HintPath>
+    </Reference>
+    <Reference Include="MonoMod.Utils">
+      <HintPath>../BepInEx/core/MonoMod.Utils.dll</HintPath>
+    </Reference>
+
+    <!-- BepInEx/utils -->
+    <Reference Include="PUBLIC-Assembly-CSharp">
+      <HintPath>../BepInEx/utils/PUBLIC-Assembly-CSharp.dll</HintPath>
+    </Reference>
+
+    <!-- BepInEx/plugins -->
+    <Reference Include="HOOKS-Assembly-CSharp">
+      <HintPath>../BepInEx/plugins/HOOKS-Assembly-CSharp.dll</HintPath>
+    </Reference>
+
+    <!-- Managed DLLs -->
+    <Reference Include="Assembly-CSharp-firstpass">
+      <HintPath>../Managed/Assembly-CSharp-firstpass.dll</HintPath>
+    </Reference>
+    <Reference Include="Unity.Mathematics">
+      <HintPath>../Managed/Unity.Mathematics.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine">
+      <HintPath>../Managed/UnityEngine.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.CoreModule">
+      <HintPath>../Managed/UnityEngine.CoreModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.InputLegacyModule">
+      <HintPath>../Managed/UnityEngine.InputLegacyModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.ImageConversionModule">
+      <HintPath>../Managed/UnityEngine.ImageConversionModule.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.UI">
+      <HintPath>../Managed/UnityEngine.UI.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>../Managed/Newtonsoft.Json.dll</HintPath>
+    </Reference>
+    <Reference Include="GoKit">
+      <HintPath>../Managed/GoKit.dll</HintPath>
+    </Reference>
+    <Reference Include="Rewired_Core">
+      <HintPath>../Managed/Rewired_Core.dll</HintPath>
+    </Reference>
+    <Reference Include="UnityEngine.AudioModule">
+      <HintPath>../Managed/UnityEngine.AudioModule.dll</HintPath>
+    </Reference>
+
+  <!-- POM -->
+  <Reference Include="Pom">
+      <HintPath>../Pom.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+
+  <PropertyGroup>
+    <TargetFramework>net48</TargetFramework>
+    <LangVersion>Latest</LangVersion>
+    <Nullable>enable</Nullable>
+    <!-- Change this based on where the mod directory is located -->
+    <ModPath>D:\slycefolder\SteamLibrary\steamapps\common\Rain World\RainWorld_Data\StreamingAssets\mods\uql-terminus</ModPath>
+  </PropertyGroup>
+
+  <Target Name="PostBuild" AfterTargets="Build">
+    <!-- DLL → plugins -->
+    <Exec
+      Command='xcopy /Y /I /Q &quot;$(TargetPath)&quot; &quot;$(ModPath)\plugins\&quot;' />
+
+    <!-- Source → mods\uql-terminus\source (root .cs, .sln & .csproj) -->
+    <Exec
+      Command='xcopy /Y /I /Q &quot;$(ProjectDir)*.cs&quot; &quot;$(ModPath)\source\&quot;' />
+    <Exec
+      Command='xcopy /Y /I /Q &quot;$(ProjectDir)*.csproj&quot; &quot;$(ModPath)\source\&quot;' />
+    <Exec
+      Command='xcopy /Y /I /Q &quot;$(ProjectDir)*.sln&quot; &quot;$(ModPath)\source\&quot;' />
+
+    <!-- Clear; Source → mods\uql-terminus\source\TerminusObjects (all .cs under TerminusObjects\) -->
+    <RemoveDir Directories="$(ModPath)\source\TerminusObjects\" />
+    <MakeDir Directories="$(ModPath)\source\" />
+    <Exec
+      Command='xcopy /Y /E /I /Q &quot;$(ProjectDir)TerminusObjects\*.cs&quot; &quot;$(ModPath)\source\TerminusObjects\&quot;' />
+  </Target>
+</Project>

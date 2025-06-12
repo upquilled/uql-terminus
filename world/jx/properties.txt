@@ -2,6 +2,7 @@ Subregion: Fissures
 Subregion: Local Terminus
 Subregion: Cyclic Intake Manifold
 Subregion: Outer Expanse
+Subregion: Rapid Absorption Matrix
 pupSpawnChance: 0.05
 Room Setting Templates: WallTop, Fabrik, Fissures, Fissures Alt, Fiscave
 earlyCycleChance: 0.05
@@ -13,3 +14,4 @@ overseersMax: 5
 Room_Attr: JX_FALL04: Scavenger-Like,
 Room_Attr: JX_FALL05: Scavenger-Like,
 Room_Attr: JX_FALLTREASURE: Scavenger-Stay,
+Room_Attr: JX_RISE02: Centipede-Forbidden,SmallCentipede-Forbidden,Scavenger-Forbidden,DropBug-Forbidden,ZoopLizard-Forbidden,

@@ -21,14 +21,24 @@ TH_JX - CIMBELLS : NEUTRAL
 TH_JX - CIMBASS : NEUTRAL
 TH_JX - CIMPAD : NEUTRAL
 TH_JX - CIMCHORDS : NEUTRAL
+TH_JX - RAMMKICK : NEUTRAL
+TH_JX - RAMMBITS : NEUTRAL
+TH_JX - RAMMPERC : NEUTRAL
+TH_JX - RAMMHATS : NEUTRAL
+TH_JX - RAMMSPURS : NEUTRAL
+TH_JX - RAMMBELLS : NEUTRAL
+TH_JX - RAMMBASS : NEUTRAL
+TH_JX - RAMMPAD : NEUTRAL
+TH_JX - RAMMCHORDS : NEUTRAL
+TH_JX - RAMARP : NEUTRAL
 
-Layer : {Local Terminus}TH_JX - KICK, {Local Terminus}TH_JX - PERC, {Local Terminus}TH_JX - SHAKER, {Cyclic Intake Manifold}TH_JX - CIMKICK
-Layer : {Local Terminus}TH_JX - KICK, {Local Terminus}TH_JX - PERC, {Local Terminus}TH_JX - SHAKER, {Cyclic Intake Manifold}TH_JX - CIMPERC, {Cyclic Intake Manifold}TH_JX - CIMBITS
-Layer : {Local Terminus}TH_JX - KICK, {Local Terminus}TH_JX - PERC, {Local Terminus}TH_JX - SHAKER, {Cyclic Intake Manifold}TH_JX - CIMBASS
-Layer : {Local Terminus}TH_JX - KICK, {Local Terminus}TH_JX - PERC, {Local Terminus}TH_JX - SHAKER, {Local Terminus}TH_JX - NOISE, {Local Terminus}TH_JX - MARIMBA, {Local Terminus}{D}TH_JX - BASS, {Local Terminus}{N}TH_JX - NIGHTBASS, {Cyclic Intake Manifold}TH_JX - CIMSPURS, {Cyclic Intake Manifold}TH_JX - CIMCHORDS
-Layer : {Local Terminus}TH_JX - KICK, {Local Terminus}TH_JX - PERC, {Local Terminus}TH_JX - SHAKER, {Local Terminus}TH_JX - NOISE, {Local Terminus}TH_JX - MARIMBA, {Local Terminus}{D}TH_JX - BASS, {Local Terminus}{N}TH_JX - NIGHTBASS, {Cyclic Intake Manifold}TH_JX - CIMCHORDS, {Cyclic Intake Manifold}TH_JX - CIMSPURS
-Layer : {Local Terminus}TH_JX - MARIMBA, {Local Terminus}{D}TH_JX - ARPS, {Local Terminus}{N}TH_JX - NIGHTARPS, {Cyclic Intake Manifold}TH_JX - CIMPERC, {Cyclic Intake Manifold}TH_JX - CIMBITS
-Layer : {Local Terminus}{D}TH_JX - BASS, {Local Terminus}{N}TH_JX - NIGHTBASS, {Cyclic Intake Manifold}TH_JX - CIMBELLS, {Cyclic Intake Manifold}TH_JX - CIMPAD, {Cyclic Intake Manifold}TH_JX - CIMHATS
-Layer : {Local Terminus}TH_JX - KICK, {Local Terminus}{D}TH_JX - ARPS, {Local Terminus}{N}TH_JX - NIGHTARPS, {Local Terminus}{D}TH_JX - BEAT, {Local Terminus}{N}TH_JX - NIGHTBEAT, {Local Terminus}{D}TH_JX - CHORDS, {Local Terminus}{N}TH_JX - NIGHTCHORDS, {Cyclic Intake Manifold}TH_JX - CIMBELLS, {Cyclic Intake Manifold}TH_JX - CIMPAD, {Cyclic Intake Manifold}TH_JX - CIMHATS
-Layer : {Local Terminus}TH_JX - KICK, {Local Terminus}{D}TH_JX - ARPS, {Local Terminus}{N}TH_JX - NIGHTARPS, {Local Terminus}{D}TH_JX - BEAT, {Local Terminus}{N}TH_JX - NIGHTBEAT, {Local Terminus}{D}TH_JX - CHORDS, {Local Terminus}{N}TH_JX - NIGHTCHORDS, {Local Terminus}{D}TH_JX - PLUCK, {Local Terminus}{N}TH_JX - NIGHTPLUCK, {Cyclic Intake Manifold}TH_JX - CIMBELLS, {Cyclic Intake Manifold}TH_JX - CIMPAD, {Cyclic Intake Manifold}TH_JX - CIMHATS
-Layer : {Local Terminus}{D}TH_JX - PLUCK, {Local Terminus}{N}TH_JX - NIGHTPLUCK, {Local Terminus}TH_JX - LEAD
+Layer : {Local Terminus|Outer Expanse}TH_JX - KICK, {Local Terminus|Outer Expanse}TH_JX - PERC, {Local Terminus|Outer Expanse}TH_JX - SHAKER, {Cyclic Intake Manifold}TH_JX - CIMKICK, {Rapid Absorption Matrix}TH_JX - RAMKICK
+Layer : {Local Terminus|Outer Expanse}TH_JX - KICK, {Local Terminus|Outer Expanse}TH_JX - PERC, {Local Terminus|Outer Expanse}TH_JX - SHAKER, {Cyclic Intake Manifold}TH_JX - CIMPERC, {Cyclic Intake Manifold}TH_JX - CIMBITS, {Rapid Absorption Matrix}TH_JX - RAMPERC, {Rapid Absorption Matrix}TH_JX - RAMBITS
+Layer : {Local Terminus|Outer Expanse}TH_JX - KICK, {Local Terminus|Outer Expanse}TH_JX - PERC, {Local Terminus|Outer Expanse}TH_JX - SHAKER, {Cyclic Intake Manifold}TH_JX - CIMBASS, {Rapid Absorption Matrix}TH_JX - RAMBASS
+Layer : {Local Terminus|Outer Expanse}TH_JX - KICK, {Local Terminus|Outer Expanse}TH_JX - PERC, {Local Terminus|Outer Expanse}TH_JX - SHAKER, {Local Terminus|Outer Expanse}TH_JX - NOISE, {Local Terminus|Outer Expanse}TH_JX - MARIMBA, {Local Terminus|Outer Expanse}{D}TH_JX - BASS, {Local Terminus|Outer Expanse}{N}TH_JX - NIGHTBASS, {Cyclic Intake Manifold}TH_JX - CIMSPURS, {Cyclic Intake Manifold}TH_JX - CIMCHORDS, {Rapid Absorption Matrix}TH_JX - RAMSPURS, {Rapid Absorption Matrix}TH_JX - RAMCHORDS
+Layer : {Local Terminus|Outer Expanse}TH_JX - KICK, {Local Terminus|Outer Expanse}TH_JX - PERC, {Local Terminus|Outer Expanse}TH_JX - SHAKER, {Local Terminus|Outer Expanse}TH_JX - NOISE, {Local Terminus|Outer Expanse}TH_JX - MARIMBA, {Local Terminus|Outer Expanse}{D}TH_JX - BASS, {Local Terminus|Outer Expanse}{N}TH_JX - NIGHTBASS, {Cyclic Intake Manifold}TH_JX - CIMCHORDS, {Cyclic Intake Manifold}TH_JX - CIMSPURS, {Rapid Absorption Matrix}TH_JX - RAMCHORDS, {Rapid Absorption Matrix}TH_JX - RAMSPURS
+Layer : {Local Terminus|Outer Expanse}TH_JX - MARIMBA, {Local Terminus|Outer Expanse}{D}TH_JX - ARPS, {Local Terminus|Outer Expanse}{N}TH_JX - NIGHTARPS, {Cyclic Intake Manifold}TH_JX - CIMPERC, {Cyclic Intake Manifold}TH_JX - CIMBITS, {Rapid Absorption Matrix}TH_JX - RAMPERC, {Rapid Absorption Matrix}TH_JX - RAMBITS
+Layer : {Local Terminus|Outer Expanse}{D}TH_JX - BASS, {Local Terminus|Outer Expanse}{N}TH_JX - NIGHTBASS, {Cyclic Intake Manifold}TH_JX - CIMBELLS, {Cyclic Intake Manifold}TH_JX - CIMPAD, {Cyclic Intake Manifold}TH_JX - CIMHATS, {Rapid Absorption Matrix}TH_JX - RAMBELLS, {Rapid Absorption Matrix}TH_JX - RAMPAD, {Rapid Absorption Matrix}TH_JX - RAMHATS
+Layer : {Local Terminus|Outer Expanse}TH_JX - KICK, {Local Terminus|Outer Expanse}{D}TH_JX - ARPS, {Local Terminus|Outer Expanse}{N}TH_JX - NIGHTARPS, {Local Terminus|Outer Expanse}{D}TH_JX - BEAT, {Local Terminus|Outer Expanse}{N}TH_JX - NIGHTBEAT, {Local Terminus|Outer Expanse}{D}TH_JX - CHORDS, {Local Terminus|Outer Expanse}{N}TH_JX - NIGHTCHORDS, {Cyclic Intake Manifold}TH_JX - CIMBELLS, {Cyclic Intake Manifold}TH_JX - CIMPAD, {Cyclic Intake Manifold}TH_JX - CIMHATS, {Rapid Absorption Matrix}TH_JX - RAMBELLS, {Rapid Absorption Matrix}TH_JX - RAMPAD, {Rapid Absorption Matrix}TH_JX - RAMHATS
+Layer : {Local Terminus|Outer Expanse}TH_JX - KICK, {Local Terminus|Outer Expanse}{D}TH_JX - ARPS, {Local Terminus|Outer Expanse}{N}TH_JX - NIGHTARPS, {Local Terminus|Outer Expanse}{D}TH_JX - BEAT, {Local Terminus|Outer Expanse}{N}TH_JX - NIGHTBEAT, {Local Terminus|Outer Expanse}{D}TH_JX - CHORDS, {Local Terminus|Outer Expanse}{N}TH_JX - NIGHTCHORDS, {Local Terminus|Outer Expanse}{D}TH_JX - PLUCK, {Local Terminus|Outer Expanse}{N}TH_JX - NIGHTPLUCK, {Cyclic Intake Manifold}TH_JX - CIMBELLS, {Cyclic Intake Manifold}TH_JX - CIMPAD, {Cyclic Intake Manifold}TH_JX - CIMHATS, {Rapid Absorption Matrix}TH_JX - RAMBELLS, {Rapid Absorption Matrix}TH_JX - RAMPAD, {Rapid Absorption Matrix}TH_JX - RAMHATS, {Rapid Absorption Matrix}TH_JX - RAMARPS
+Layer : {Local Terminus|Outer Expanse}{D}TH_JX - PLUCK, {Local Terminus|Outer Expanse}{N}TH_JX - NIGHTPLUCK, {Local Terminus|Outer Expanse}TH_JX - LEAD, {Rapid Absorption Matrix}TH_JX - RAMBELLS, {Rapid Absorption Matrix}TH_JX - RAMPAD, {Rapid Absorption Matrix}TH_JX - RAMHATS, {Rapid Absorption Matrix}TH_JX - RAMARPS
