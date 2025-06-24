@@ -1,11 +1,11 @@
 {
 	"id": "uql.terminus",
 	"name": "Local Terminus",
-	"version": "0.1.1",
+	"version": "0.1.2",
 	"hide_version": false,
 	"authors": "upquilled"
 	"description": "Venture beyond the Chasing Wind Superstructure",
-	"requirements": ["myr.chasing_wind", "regionkit"],
-	"requirements_names": ["Chasing Wind", "RegionKit"],
+	"requirements": ["myr.chasing_wind"],
+	"requirements_names": ["Chasing Wind"],
 	"checksum_override_version": false
 }
