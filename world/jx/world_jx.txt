@@ -41,7 +41,7 @@ JX_FALL05 : 5-Snail, 6-Snail
 JX_FALL06 : 2-Snail, 3-Snail-2, 4-Leech-3, 5-Leech-5, 5-Salamander-{PreCycle}
 JX_FALL07 : 3-Centipede, 3-SmallCentipede-2
 
-JX_RISE01 : 3-Leech-3, 3-Salamander-{PreCycle}, 4-Dropwig
+JX_RISE01 : 4-Leech-3, 4-Salamander-{PreCycle}, 3-Dropwig
 JX_RISE03 : 3-Strawberry
 JX_RISE04 : 2-Strawberry, 2-BigEel-{PreCycle}, 3-Mimic-{4}
 JX_RISE05 : 2-EggBug, 3-Dropwig
