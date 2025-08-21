@@ -6,6 +6,7 @@ WaveAmplitude: 0
 SecondWaveLength: 0.1666667
 SecondWaveAmplitude: 0
 Clouds: 0.7282609
+Grime: 0.299421
 BkgDroneVolume: 0
 RandomItemSpearChance: 0.3086956
 WaterReflectionAlpha: 0.0326087
