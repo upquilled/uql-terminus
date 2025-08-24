@@ -32,17 +32,17 @@ namespace UQLTerminus
 			int id = data.GetID();
 			int screen = data.GetScreen();
 
-			if (id < 0 || id >= occupiedRoom.roomSettings.placedObjects.Count)
-				return;
-
 			if (screen < 0 || screen >= occupiedRoom.cameraPositions.Length)
 				return;
 
-			trackedObject = occupiedRoom.roomSettings.placedObjects[id];
-
 			float dist = Vector2.Distance(occupiedRoom.game.cameras[0].pos, occupiedRoom.cameraPositions[screen]);
-
+			
 			if (data.logDistance) UnityEngine.Debug.Log($"[ScreenFilter] Distance from target screen {screen}: {dist}");
+
+			if (id < 0 || id >= occupiedRoom.roomSettings.placedObjects.Count)
+				return;
+
+			trackedObject = occupiedRoom.roomSettings.placedObjects[id];
 
 			if (Vector2.Distance(occupiedRoom.game.cameras[0].pos, occupiedRoom.cameraPositions[screen]) < 35f)
 			{
