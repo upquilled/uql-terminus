@@ -13,10 +13,4 @@ MF_S06: 2yce << Myrmice
 
 -- LOCAL TERMINUS --
 
-JX_FALL01: 2yce
-JX_FALL02: 2yce
-JX_FALL03: 2yce
-JX_F_A01: 2yce
-JX_F_A02: 2yce
-
-JX_F_S01: 2yce
+*: 2yce
