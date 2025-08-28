@@ -1,11 +1,8 @@
 using System.Collections.Generic;
-using System.Collections.Specialized;
 using System.IO;
 using System.Linq;
-using MoreSlugcats;
 using RWCustom;
 using UnityEngine;
-using UnityEngine.Rendering; // for Room, etc.
 
 namespace UQLTerminus
 {
@@ -59,10 +56,9 @@ namespace UQLTerminus
 
         public float beatScale = 0f;
 
-        // Choose one constructor signature; here: Room + PlacedObject
         public JukeboxObject(Room room, PlacedObject placedObj) : base()
         {
-            // UnityEngine.Debug.Log($"[Local Terminus] Found {Hooks.PearlSoundsDict.Keys.Count} possible pearls");
+            // UnityEngine.Debug.Log($"[{UQLTerminus.info.Metadata.Name}] Found {Hooks.PearlSoundsDict.Keys.Count} possible pearls");
             data = placedObj.data as JukeboxObjectData;
             placedObject = placedObj;
             if (data.initiateWithPearl)
@@ -180,7 +176,7 @@ namespace UQLTerminus
 
                 if (closestPearl != null)
                 {
-                    // UnityEngine.Debug.Log($"[Local Terminus] Located Pearl of type {closestPearl.dataPearlType}");
+                    // UnityEngine.Debug.Log($"[{UQLTerminus.info.Metadata.Name}] Located Pearl of type {closestPearl.dataPearlType}");
                     if (closestPearl != null && closestPearl.realizedObject is DataPearl realizedPearl)
                     {
                         Pearl = realizedPearl;
@@ -275,7 +271,7 @@ namespace UQLTerminus
                 }
                 return chunkSoundEmitter;
             }
-            UnityEngine.Debug.LogWarning($"[Local Terminus] Loading sound {text4} failed!");
+            UnityEngine.Debug.LogWarning($"[{UQLTerminus.info.Metadata.Name}] Loading sound {text4} failed!");
             return null;
         }
 
@@ -300,7 +296,7 @@ namespace UQLTerminus
                 }
                 return disembodiedLoopEmitter;
             }
-            UnityEngine.Debug.LogWarning($"[Local Terminus] Loading sound {text4} failed!");
+            UnityEngine.Debug.LogWarning($"[{UQLTerminus.info.Metadata.Name}] Loading sound {text4} failed!");
             return null;
         }
     }

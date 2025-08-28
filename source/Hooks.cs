@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using BepInEx.Logging;
-using RWCustom;
+using System.Linq;
 
 namespace UQLTerminus
 {
@@ -11,31 +11,21 @@ namespace UQLTerminus
         public static readonly Dictionary<DataPearl.AbstractDataPearl.DataPearlType, PearlSoundRefs> PearlSoundsDict
     = new Dictionary<DataPearl.AbstractDataPearl.DataPearlType, PearlSoundRefs>();
 
-        public ManualLogSource Logger;
-        public Hooks(ManualLogSource logger) { Logger = logger; }
-
-        public void LoadPearlSounds()
+        public static void LoadPearlSounds()
         {
-            foreach (ModManager.Mod mod in ModManager.ActiveMods)
-            {
-                string songDir = Path.Combine(mod.path, "music", "songs");
-
-                if (Directory.Exists(songDir))
+            foreach (var filePath in AssetManager.ListDirectory("music/songs")
+            .Where(f => string.Equals(Path.GetExtension(f), ".txt", StringComparison.OrdinalIgnoreCase)))
                 {
-                    foreach (var filePath in Directory.GetFiles(songDir, "*.txt"))
+                    try
                     {
-                        try
-                        {
-                            LoadPearlSound(filePath); // You can define this method to handle parsing + dict insertion
-                            Logger.LogInfo($"Loaded pearl sound from {filePath}");
-                        }
-                        catch (Exception ex)
-                        {
-                            Logger.LogError($"Failed to load pearl sound file '{filePath}': {ex}");
-                        }
+                        LoadPearlSound(filePath); // You can define this method to handle parsing + dict insertion
+                        UQLTerminus.logger.LogInfo($"Loaded pearl sound from {filePath.Replace(Path.DirectorySeparatorChar, '/')}");
+                    }
+                    catch (Exception ex)
+                    {
+                        UQLTerminus.logger.LogError($"Failed to load pearl sound file '{filePath.Replace(Path.DirectorySeparatorChar, '/')}': {ex}");
                     }
                 }
-            }
         }
 
         private static SoundData ParseSoundLine(string line)
@@ -67,7 +57,7 @@ namespace UQLTerminus
         }
 
 
-        private void LoadPearlSound(string file)
+        private static void LoadPearlSound(string file)
         {
             var lines = File.ReadAllLines(file);
             var soundRefs = new PearlSoundRefs();
@@ -87,19 +77,18 @@ namespace UQLTerminus
             if (ExtEnumBase.TryParse(typeof(DataPearl.AbstractDataPearl.DataPearlType), pearlName, true, out var pearlType))
             {
                 PearlSoundsDict[(DataPearl.AbstractDataPearl.DataPearlType)pearlType] = soundRefs;
-                Logger.LogInfo($"Loaded sounds for pearl {pearlName}");
             }
             else
             {
-                Logger.LogWarning($"Could not parse pearl type from {pearlName}");
+                UQLTerminus.logger.LogWarning($"Could not parse pearl type from {pearlName}");
                 throw new Exception("Pearl type not recognized!");
             }
         }
-        public void Apply()
+        public static void Apply()
         {
-            Pom.Pom.RegisterManagedObject<JukeboxObject, JukeboxObjectData, Pom.Pom.ManagedRepresentation>("PearlJukebox", "Local Terminus");
-            Pom.Pom.RegisterManagedObject<JukeboxResonance, JukeboxResonanceData, Pom.Pom.ManagedRepresentation>("JukeboxResonance", "Local Terminus");
-            Pom.Pom.RegisterManagedObject<ScreenFilterObject, ScreenFilterObjectData, Pom.Pom.ManagedRepresentation>("ScreenFilter", "Local Terminus");
+            Pom.Pom.RegisterManagedObject<JukeboxObject, JukeboxObjectData, Pom.Pom.ManagedRepresentation>("PearlJukebox", UQLTerminus.info.Metadata.Name);
+            Pom.Pom.RegisterManagedObject<JukeboxResonance, JukeboxResonanceData, Pom.Pom.ManagedRepresentation>("JukeboxResonance", UQLTerminus.info.Metadata.Name);
+            Pom.Pom.RegisterManagedObject<ScreenFilterObject, ScreenFilterObjectData, Pom.Pom.ManagedRepresentation>("ScreenFilter", UQLTerminus.info.Metadata.Name);
         }
     }
     public class SoundData

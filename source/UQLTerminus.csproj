@@ -94,27 +94,5 @@
     <TargetFramework>net48</TargetFramework>
     <LangVersion>Latest</LangVersion>
     <Nullable>enable</Nullable>
-    <!-- Change this based on where the mod directory is located -->
-    <ModPath>D:\slycefolder\SteamLibrary\steamapps\common\Rain World\RainWorld_Data\StreamingAssets\mods\uql-terminus</ModPath>
   </PropertyGroup>
-
-  <Target Name="PostBuild" AfterTargets="Build">
-    <!-- DLL → plugins -->
-    <Exec
-      Command='xcopy /Y /I /Q &quot;$(TargetPath)&quot; &quot;$(ModPath)\plugins\&quot;' />
-
-    <!-- Source → mods\uql-terminus\source (root .cs, .sln & .csproj) -->
-    <Exec
-      Command='xcopy /Y /I /Q &quot;$(ProjectDir)*.cs&quot; &quot;$(ModPath)\source\&quot;' />
-    <Exec
-      Command='xcopy /Y /I /Q &quot;$(ProjectDir)*.csproj&quot; &quot;$(ModPath)\source\&quot;' />
-    <Exec
-      Command='xcopy /Y /I /Q &quot;$(ProjectDir)*.sln&quot; &quot;$(ModPath)\source\&quot;' />
-
-    <!-- Clear; Source → mods\uql-terminus\source\TerminusObjects (all .cs under TerminusObjects\) -->
-    <RemoveDir Directories="$(ModPath)\source\TerminusObjects\" />
-    <MakeDir Directories="$(ModPath)\source\" />
-    <Exec
-      Command='xcopy /Y /E /I /Q &quot;$(ProjectDir)TerminusObjects\*.cs&quot; &quot;$(ModPath)\source\TerminusObjects\&quot;' />
-  </Target>
 </Project>

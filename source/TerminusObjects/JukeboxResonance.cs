@@ -19,7 +19,7 @@ namespace UQLTerminus
             if (logTicker > 30)
             {
                 string isIt = jukeboxInfo?.isPlaying ?? false ? "" : " not";
-                UnityEngine.Debug.Log($"[Local Terminus] Pearl {jukeboxInfo?.CurrentPearl} is{isIt} playing!");
+                UnityEngine.Debug.Log($"[{UQLTerminus.info.Metadata.Name}] Pearl {jukeboxInfo?.CurrentPearl} is{isIt} playing!");
                 logTicker = 0;
             }
             if (jukeboxInfo != null && jukeboxInfo.isPlaying)

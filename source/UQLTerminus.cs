@@ -1,5 +1,4 @@
 ﻿using System;
-using System.CodeDom;
 using System.Security;
 using System.Security.Permissions;
 using BepInEx;
@@ -10,7 +9,7 @@ using BepInEx.Logging;
 
 namespace UQLTerminus;
 
-[BepInPlugin("uql.terminus", "Local Terminus", "0.1.11")]
+[BepInPlugin("uql.terminus", "Local Terminus", "0.1.15")]
 public partial class UQLTerminus : BaseUnityPlugin
 {
 
@@ -18,9 +17,15 @@ public partial class UQLTerminus : BaseUnityPlugin
     {
         On.RainWorld.OnModsInit += RainWorldOnOnModsInit;
         On.RainWorld.PostModsInit += RainWorldOnPostModsInit;
+        logger = Logger;
+        info = Info;
+
     }
 
     private bool IsInit;
+
+    internal static PluginInfo info;
+    internal static ManualLogSource logger;
 
     private void RainWorldOnOnModsInit(On.RainWorld.orig_OnModsInit orig, RainWorld self)
     {
@@ -30,7 +35,7 @@ public partial class UQLTerminus : BaseUnityPlugin
         try
         {
             IsInit = true;
-            new Hooks(Logger).Apply();
+            Hooks.Apply();
         }
         catch (Exception ex)
         {
@@ -42,6 +47,6 @@ public partial class UQLTerminus : BaseUnityPlugin
     {
         orig(self);
         Logger.LogInfo("Loading pearls after all mods have initialized");
-        new Hooks(Logger).LoadPearlSounds(); // or whatever logic you need
+        Hooks.LoadPearlSounds(); // or whatever logic you need
     }
 }
