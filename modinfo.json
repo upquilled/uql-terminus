@@ -1,7 +1,7 @@
 {
 	"id": "uql.terminus",
 	"name": "Local Terminus",
-	"version": "0.1.16",
+	"version": "0.1.17",
 	"authors": "upquilled",
 	"description": "Venture beyond the Chasing Wind Superstructure",
 	"requirements": ["myr.chasing_wind", "uql.extra"],
@@ -9,7 +9,9 @@
 	"tags": ["Regions"],
 	"checksum_override_version": true,
 	"uql.extra": {
-		"exclude_steam": ["fairypresets/*", "source/**", "lightrooms/*", ".git/**", ".gitattributes", ".gitignore", "*.DS_Store", "README.md", "Thumbs.db", "*.tmp", "bwu.json"],
-		"delete_temp": true
+		"exclude_steam": {
+			"globs": ["fairypresets/*", "source/**", "lightrooms/*", ".git/**", ".gitattributes", ".gitignore", "*.DS_Store", "README.md", "Thumbs.db", "*.tmp", "bwu.json", "plugins/**/*.pdb"],
+			"delete_temp": true
+		}
 	}
 }
