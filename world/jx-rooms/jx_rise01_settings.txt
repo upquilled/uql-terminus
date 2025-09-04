@@ -1,5 +1,6 @@
 Template: jx_settingstemplate_fissures
 DangerType: Flood
+WaterReflectionAlpha: 0.1304348
 Palette: 1802
 Effects: Darkness-0-20-20, Fog-0.7826087-30-30, LightRain-0-40-40, SilenceWater-0.3152174-92-110, 
 PlacedObjects: FairyParticleSettings><204.659><296.1286><-504~40.66025~0~2.717391~1.630435~0.06521739~1~1~114.3477~234.3478~40~76.08695~5~14.34791~180~180~0.6739131~0.8478261~0.1304348~0.09782609~0.1630435~0.2282609~0.5~0.4673913~6.086957~Pixel~SIN_IO~QUAD_IN~25.65215~0.173913~0, ColouredLightSource><489.087><376.3659><298~80~FFFFFF~22^-24~1~False~0.5~0~0.5~Always~0~100, ColouredLightSource><546.3024><359.7196><100~50~FFFFFF~19^-16~1~False~0.5~0~0.5~Always~0~100, ColouredLightSource><331.1044><258.4206><-311~-181~FFFFFF~65^-61~1~False~0.5~0~0.5~Always~0~100, InsectGroup><455.0997><246.368><226~2~0~0~WaterGlowworm~0.9782609, ColouredLightSource><404.1633><454.1802><-38~-433~FFFFFF~95^-16~0.173913~True~0.5~0~0.5~Always~0~100, 

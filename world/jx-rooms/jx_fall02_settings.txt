@@ -2,6 +2,7 @@ Template: jx_settingstemplate_fissures
 DangerType: Flood
 Clouds: 0.9347826
 Grime: 0.3478261
+WaterReflectionAlpha: 0.1304348
 Palette: 1802
 EffectColorA: 9
 Effects: Fog-0.6195652-661-445, LightRain-0-374-225, Darkness-0-390-134, ReplaceEffectColorB-0-1017-507-Color-0.05434782-0.05434782-0.06521739, SilenceWater-0.5760869-20-20, MurkyWater-0.8043478-194-0, WaterLights-1-258-142, WaterDepth-0.06521739-30-30, 
