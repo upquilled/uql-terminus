@@ -1,7 +1,7 @@
 {
 	"id": "uql.terminus",
 	"name": "Local Terminus",
-	"version": "0.1.20",
+	"version": "0.1.22",
 	"authors": "upquilled",
 	"description": "Venture beyond the Chasing Wind Superstructure",
 	"requirements": [ "myr.chasing_wind", "uql.extra" ],
@@ -17,13 +17,18 @@
 				".git/**",
 				".gitattributes",
 				".gitignore",
-				"*.DS_Store",
+				"**/.DS_Store",
 				"README.md",
-				"Thumbs.db",
-				"*.tmp",
+				"**/Thumbs.db",
+				"**.tmp",
 				"bwu.json",
-				"plugins/**/*.pdb",
-				"world/jx/map_jx_backup.png"
+				"plugins/**.pdb",
+				"world/jx/map_jx_backup.png",
+				"music/**",
+				"!music/songs/jx-capricorn.ogg",
+				"!music/songs/jx-suntimer.ogg",
+				"!music/songs/jx-halcyon*.ogg",
+				"!music/songs/*.txt"
 			],
 			"delete_temp": true
 		}

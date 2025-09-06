@@ -9,7 +9,7 @@ using BepInEx.Logging;
 
 namespace UQLTerminus;
 
-[BepInPlugin("uql.terminus", "Local Terminus", "0.1.20")]
+[BepInPlugin("uql.terminus", "Local Terminus", "0.1.22")]
 public partial class UQLTerminus : BaseUnityPlugin
 {
 
