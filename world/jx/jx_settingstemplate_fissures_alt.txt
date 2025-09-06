@@ -1,4 +1,4 @@
-DangerType: FloodAndRain
+DangerType: Flood
 CeilingDrips: 0.5652174
 WaveSpeed: 0.5
 WaveLength: 0.09782609
@@ -6,9 +6,13 @@ WaveAmplitude: 0
 SecondWaveLength: 0.1666667
 SecondWaveAmplitude: 0
 Clouds: 0.7282609
+Grime: 0.139421
 BkgDroneVolume: 0
 RandomItemSpearChance: 0.3086956
 WaterReflectionAlpha: 0.0326087
 Palette: 1802
-Effects: Fog-0.6195652-661-445, WaterDepth-0.05434782-245-35, ReplaceEffectColorB-0-1017-507-Color-0.05434782-0.05434782-0.06521739, SilenceWater-0.5760869-20-20, MurkyWater-0.8043478-30-30, WaterLights-0.64522-258-142, Bloom-0.4130435-164-108, FairyParticles-0.01086957-34-130, 
-AmbientSounds: OMNI><am_sub-mysticcave1.ogg><333.0261><518.3017><0.07608695><1, OMNI><jx-treatment_facility.ogg><836.5551><632.2948><0.06521739><0.4521739, OMNI><am_env-subterr.ogg><829.4495><540.2649><0.173913><1, OMNI><am_win-subwnd.ogg><828.3654><463.1634><0.1521739><1, OMNI><so_wat-lildrips.ogg><651.8187><619.8345><0.1304348><1, OMNI><so_wat-moredrips.ogg><654.0764><543.8492><0.1195652><1, OMNI><so_wat-properdrips.ogg><650.3><466.7509><0.1304348><1, 
+EffectColorA: 9
+EffectColorB: 21
+Effects: ReplaceEffectColorB-0.09782609-746-517-Color-0.1304348-0.09782609-0.08695652, SilenceWater-1-745-456, MurkyWater-0.8043478-747-401, LightRain-0.3152174-745-343, WaterDepth-0.04347826-491-631, Bloom-0.4347826-494-583, FairyParticles-0.01086957-495-536, 
+PlacedObjects: FairyParticleSettings><100><100><-505~98.66025~0~2.717391~1.630435~0.06521739~1~1~114.3477~234.3478~40~76.08695~5~14.34791~180~180~0.6739131~0.8478261~0.1304348~0.09782609~0.1630435~0.2282609~0.5~0.4673913~6.086957~Pixel~SIN_IO~QUAD_IN~25.65215~0.173913~0, 
+AmbientSounds: OMNI><jx_treatment_facility.ogg><829.9041><619.6276><0.1304348><0.1586957, OMNI><am_env-subterr.ogg><829.4495><540.2649><0.173913><1, OMNI><am_win-subwnd.ogg><828.3654><463.1634><0.1521739><1, OMNI><so_wat-lildrips.ogg><651.8187><619.8345><0.1304348><1, OMNI><so_wat-moredrips.ogg><654.0764><543.8492><0.1195652><1, OMNI><so_wat-properdrips.ogg><650.3><466.7509><0.1304348><1, 

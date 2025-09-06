@@ -1,7 +1,7 @@
 {
 	"id": "uql.terminus",
 	"name": "Local Terminus",
-	"version": "0.1.19",
+	"version": "0.1.20",
 	"authors": "upquilled",
 	"description": "Venture beyond the Chasing Wind Superstructure",
 	"requirements": [ "myr.chasing_wind", "uql.extra" ],
@@ -22,7 +22,8 @@
 				"Thumbs.db",
 				"*.tmp",
 				"bwu.json",
-				"plugins/**/*.pdb"
+				"plugins/**/*.pdb",
+				"world/jx/map_jx_backup.png"
 			],
 			"delete_temp": true
 		}

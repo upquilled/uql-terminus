@@ -42,7 +42,7 @@ namespace UQLTerminus
 
 			trackedObject = occupiedRoom.roomSettings.placedObjects[id];
 
-			if (Vector2.Distance(occupiedRoom.game.cameras[0].pos, occupiedRoom.cameraPositions[screen]) < 35f)
+			if (Vector2.Distance(occupiedRoom.game.cameras[0].pos, occupiedRoom.cameraPositions[screen]) < data.threshold)
 			{
 				if (!objectPos.HasValue)
 					objectPos = trackedObject.pos;

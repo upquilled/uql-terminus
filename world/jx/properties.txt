@@ -5,7 +5,7 @@ Subregion: Outer Expanse
 Subregion: Rapid Absorption Matrix
 Subregion: Calcis
 pupSpawnChance: 0.05
-Room Setting Templates: WallTop, Fabrik, Fissures, Fissures Alt, Fiscave
+Room Setting Templates: Fissures, Fissures_Alt, Fiscave
 earlyCycleChance: 0.05
 overseersSpawnChance: 0
 overseersColorOverride: 0.7, 0.7, 0.7

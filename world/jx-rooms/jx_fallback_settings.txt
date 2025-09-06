@@ -1,4 +1,5 @@
 Template: jx_settingstemplate_fissures
+DangerType: Flood
 WaterReflectionAlpha: 0.2826087
 Palette: 1802
 Effects: LightRain-0-20-20, WaterDepth-0.06521739-30-30, Darkness-0-50-50, Fog-0.6956522-60-60, 
