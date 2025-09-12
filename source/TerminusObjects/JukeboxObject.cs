@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -8,10 +9,11 @@ namespace UQLTerminus;
 
 public class JukeboxObject : UpdatableAndDeletable, IDrawable
 {
+    private Queue<(Action action, int delay)> InvokeQueue = new();
     public JukeboxObjectData data;
     private PlacedObject placedObject;
 
-    private PearlSoundRefs pearlSoundRefs;
+    private PearlSoundRefs? pearlSoundRefs;
 
     private DataPearl? _pearl = null;
 
@@ -28,8 +30,7 @@ public class JukeboxObject : UpdatableAndDeletable, IDrawable
     public DataPearl? Pearl
     {
         get => _pearl;
-        set
-        {
+        private set {
             _pearl = value;
             updatePearlStatus();
         }
@@ -37,6 +38,10 @@ public class JukeboxObject : UpdatableAndDeletable, IDrawable
 
     private void updatePearlStatus()
     {
+        if (Pearl?.AbstractPearl == null) return;
+
+        if (!Hooks.PearlSoundsDict.TryGetValue(Pearl.AbstractPearl.dataPearlType, out pearlSoundRefs))
+        return;
 
         // Look up region
         var region = room?.world?.region;
@@ -48,56 +53,47 @@ public class JukeboxObject : UpdatableAndDeletable, IDrawable
             var info = jukeboxList.Find(j => j.JukeboxID == data.ID);
             if (info != null)
             {
-                info.CurrentPearl = _pearl.AbstractPearl.dataPearlType;
+                info.CurrentPearl = _pearl?.AbstractPearl.dataPearlType;
                 info.isPlaying = isPlaying;
             }
         }
     }
 
-    public float beatScale = 0f;
+    private float beatScale = 0f;
 
     public JukeboxObject(Room room, PlacedObject placedObj) : base()
     {
-        // UnityEngine.Debug.Log($"[{UQLTerminus.info.Metadata.Name}] Found {Hooks.PearlSoundsDict.Keys.Count} possible pearls");
-        data = placedObj.data as JukeboxObjectData;
+        data = placedObj.data as JukeboxObjectData ?? new JukeboxObjectData(placedObj);
         placedObject = placedObj;
         if (data.initiateWithPearl)
         {
-            if (RegionJukeboxRegistry.RegionToJukeboxes.TryGetValue(room.world.region, out var loadedJukeboxList) && loadedJukeboxList.Find(j => j.JukeboxID == data.ID) != null)
-            {
-                WorldCoordinate coord = room.GetWorldCoordinate(placedObject.pos);
-                EntityID id = room.game.GetNewID();
-                var abstractPearl = new DataPearl.AbstractDataPearl(
-                    room.world,                       // World
-                        AbstractPhysicalObject.AbstractObjectType.DataPearl,  // Type
-                        null,                             // Realized object (null for now)
-                        coord,                            // Position
-                        id,                               // ID
-                        room.abstractRoom.index,          // Origin Room Index
-                        -1,                               // PlacedObjectIndex (-1 if not applicable)
-                        null,                             // PlacedObject.ConsumableObjectData (optional)
-                        data.defaultPearl      // Pearl type (change as needed)
-                );
-                Pearl = new DataPearl(abstractPearl, room.world);
-                room.AddObject(Pearl);
-            }
-            else
-            {
-                data.initiateWithPearl = false;
-            }
-
+            WorldCoordinate coord = room.ToWorldCoordinate(placedObject.pos);
+            EntityID id = room.game.GetNewID();
+            var abstractPearl = new DataPearl.AbstractDataPearl(
+                room.world,                       // World
+                    AbstractPhysicalObject.AbstractObjectType.DataPearl,  // Type
+                    null,                             // Realized object (null for now)
+                    coord,                            // Position
+                    id,                               // ID
+                    room.abstractRoom.index,          // Origin Room Index
+                    -1,                               // PlacedObjectIndex (-1 if not applicable)
+                    null,                             // PlacedObject.ConsumableObjectData (optional)
+                    data.defaultPearl      // Pearl type (change as needed)
+            );
+            Pearl = new DataPearl(abstractPearl, room.world);
+            room.AddObject(Pearl);
         }
+        else
+        {
+            data.initiateWithPearl = false;
+        }
+
+        this.room = room;
 
         Region region = room.world.region;
 
-        if (!RegionJukeboxRegistry.RegionToJukeboxes.TryGetValue(region, out var jukeboxList))
-        {
-            jukeboxList = new List<RegionJukeboxRegistry.JukeboxInfo>();
-            RegionJukeboxRegistry.RegionToJukeboxes[region] = jukeboxList;
-        }
-
-        jukeboxList.Add(new RegionJukeboxRegistry.JukeboxInfo(this));
-
+        (RegionJukeboxRegistry.RegionToJukeboxes[region] = RegionJukeboxRegistry.RegionToJukeboxes.GetValueOrDefault(region)
+        ?? new List<RegionJukeboxRegistry.JukeboxInfo>()).Add(new RegionJukeboxRegistry.JukeboxInfo(this));
     }
 
     private void PearlUpdate()
@@ -132,16 +128,26 @@ public class JukeboxObject : UpdatableAndDeletable, IDrawable
         beatScale = Mathf.Clamp(num * pearlSoundRefs.Play.BeatScale / pearlSoundRefs.Play.Volume / data.volume, 0f, 1f);
     }
 
-    public void MusicStop(bool sameRoom)
+    private void MusicStop(bool sameRoom)
     {
         if (room.game.manager.musicPlayer != null && room.game.manager.musicPlayer.song != null && room.game.manager.musicPlayer.song is JukeboxSong)
         {
             room.game.manager.musicPlayer.song.FadeOut(5f);
             if (sameRoom)
             {
-                if (grabbedBefore) MusicChunkSound(Pearl.firstChunk, pearlSoundRefs.Stop.Path, room, vol: pearlSoundRefs.Stop.Volume * data.volume, pitch: pearlSoundRefs.Stop.BeatScale);
+                if (grabbedBefore) InvokeQueue.Enqueue((
+                    () =>
+                    {
+                        MusicChunkSound(Pearl.firstChunk,
+                                              pearlSoundRefs.Stop.Path,
+                                              room,
+                                              vol: pearlSoundRefs.Stop.Volume * data.volume,
+                                              pitch: pearlSoundRefs.Stop.BeatScale);
+                        Pearl = null;
+
+                    }, 1));
+
                 Pearl.gravity = 0.9f;
-                Pearl = null;
                 beatScale = 0f;
             }
         }
@@ -150,6 +156,24 @@ public class JukeboxObject : UpdatableAndDeletable, IDrawable
     public override void Update(bool eu)
     {
         base.Update(eu);
+
+        if (!data.owner.active) Destroy();
+
+        int count = InvokeQueue.Count;
+        for (int i = 0; i < count; i++)
+        {
+            var item = InvokeQueue.Dequeue();
+
+            if (item.delay <= 1)
+            {
+                item.action.Invoke();
+                continue;
+            }
+
+            item.delay--;
+            InvokeQueue.Enqueue(item);
+        }
+
         if (data == null || room == null) return;
 
         if (Pearl == null)
@@ -173,17 +197,10 @@ public class JukeboxObject : UpdatableAndDeletable, IDrawable
                     }
                 }
             }
-
-            if (closestPearl != null)
+            if (closestPearl != null && closestPearl.realizedObject is DataPearl realizedPearl)
             {
-                // UnityEngine.Debug.Log($"[{UQLTerminus.info.Metadata.Name}] Located Pearl of type {closestPearl.dataPearlType}");
-                if (closestPearl != null && closestPearl.realizedObject is DataPearl realizedPearl)
-                {
-                    Pearl = realizedPearl;
-                    grabbedBefore = false;
-                    pearlSoundRefs = Hooks.PearlSoundsDict[Pearl.AbstractPearl.dataPearlType];
-                }
-
+                Pearl = realizedPearl;
+                grabbedBefore = false;
             }
         }
         if (Pearl != null)
@@ -222,6 +239,7 @@ public class JukeboxObject : UpdatableAndDeletable, IDrawable
 
     public void DrawSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, float timeStacker, Vector2 camPos)
     {
+
         if (slatedForDeletetion || room != rCam.room)
         {
             sLeaser.CleanSpritesAndRemove();
@@ -251,7 +269,7 @@ public class JukeboxObject : UpdatableAndDeletable, IDrawable
     public void ApplyPalette(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, RoomPalette palette)
     { }
 
-    public static ChunkSoundEmitter? MusicChunkSound(BodyChunk chunk, string path, Room room, bool loop = false, float vol = 1f, float pitch = 1f)
+    private static ChunkSoundEmitter? MusicChunkSound(BodyChunk chunk, string path, Room room, bool loop = false, float vol = 1f, float pitch = 1f)
     {
         string text3 = Path.Combine("Music", "Songs", path + ".ogg");
         string text4 = AssetManager.ResolveFilePath(text3);
@@ -271,32 +289,7 @@ public class JukeboxObject : UpdatableAndDeletable, IDrawable
             }
             return chunkSoundEmitter;
         }
-        UnityEngine.Debug.LogWarning($"[{UQLTerminus.info.Metadata.Name}] Loading sound {text4} failed!");
-        return null;
-    }
-
-    public static DisembodiedLoopEmitter? MusicDisembodiedSound(string path, Room room, float pan = 0f, float vol = 1f, float pitch = 1f)
-    {
-        string text3 = Path.Combine("Music", "Songs", path + ".ogg");
-        string text4 = AssetManager.ResolveFilePath(text3);
-        if (!Application.isConsolePlatform && text4 != Path.Combine(Custom.RootFolderDirectory(), text3.ToLowerInvariant()) && File.Exists(text4))
-        {
-            DisembodiedLoopEmitter disembodiedLoopEmitter = new DisembodiedLoopEmitter(vol, pitch, pan);
-            room.AddObject(disembodiedLoopEmitter);
-            foreach (RoomCamera camera in room.game.cameras)
-            {
-                SoundLoader.SoundData soundData = camera.virtualMicrophone.GetSoundData(SoundID.Slugcat_Stash_Spear_On_Back, -1);
-                soundData.dontAutoPlay = true;
-                soundData.soundName = path;
-                VirtualMicrophone.DisembodiedLoop disembodiedLoop = new VirtualMicrophone.DisembodiedLoop(camera.virtualMicrophone, soundData, disembodiedLoopEmitter, pan, vol, pitch, startAtRandomTime: false);
-                disembodiedLoop.singleUseSound = false;
-                _ = Application.dataPath;
-                disembodiedLoop.audioSource.clip = AssetManager.SafeWWWAudioClip("file://" + text4, threeD: false, stream: true, AudioType.OGGVORBIS);
-                camera.virtualMicrophone.soundObjects.Add(disembodiedLoop);
-            }
-            return disembodiedLoopEmitter;
-        }
-        UnityEngine.Debug.LogWarning($"[{UQLTerminus.info.Metadata.Name}] Loading sound {text4} failed!");
+        UQLTerminus.LogWarning($"Loading sound {text4.Replace(Path.DirectorySeparatorChar, '/')} failed!");
         return null;
     }
 }

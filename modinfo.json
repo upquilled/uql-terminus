@@ -1,7 +1,7 @@
 {
 	"id": "uql.terminus",
 	"name": "Local Terminus",
-	"version": "0.1.21",
+	"version": "0.1.22",
 	"authors": "upquilled",
 	"description": "Venture beyond the Chasing Wind Superstructure",
 	"requirements": [ "myr.chasing_wind", "uql.extra" ],
@@ -26,9 +26,7 @@
 				"world/jx/map_jx_backup.png",
 				"music/**",
 				"!music/songs/jx-capricorn.ogg",
-				"!music/songs/jx-suntimer.ogg",
-				"!music/songs/jx-halcyon*.ogg",
-				"!music/songs/*.txt"
+				"!music/songs/jx-suntimer.ogg"
 			],
 			"delete_temp": true
 		}

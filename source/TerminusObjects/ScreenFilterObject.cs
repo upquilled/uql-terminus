@@ -14,7 +14,7 @@ public class ScreenFilterObject : UpdatableAndDeletable
 
 	public ScreenFilterObject(Room room, PlacedObject placedObj) : base()
 	{
-		data = placedObj.data as ScreenFilterObjectData;
+		data = placedObj.data as ScreenFilterObjectData ?? new ScreenFilterObjectData(placedObj);
 		placedObject = placedObj;
 		occupiedRoom = room;
 	}
@@ -22,9 +22,11 @@ public class ScreenFilterObject : UpdatableAndDeletable
 	public override void Update(bool eu)
 	{
 		base.Update(eu);
-
+		
 		if (occupiedRoom.PlayersInRoom.Count == 0)
 			return;
+
+		if (!data.owner.active) Destroy();
 
 		int id = data.GetID();
 		int screen = data.GetScreen();
@@ -34,7 +36,7 @@ public class ScreenFilterObject : UpdatableAndDeletable
 
 		float dist = Vector2.Distance(occupiedRoom.game.cameras[0].pos, occupiedRoom.cameraPositions[screen]);
 
-		if (data.logDistance) UnityEngine.Debug.Log($"[ScreenFilter] Distance from target screen {screen}: {dist}");
+		if (data.logDistance) UQLTerminus.Log($"[ScreenFilter] Distance from target screen {screen}: {dist}");
 
 		if (id < 0 || id >= occupiedRoom.roomSettings.placedObjects.Count)
 			return;

@@ -1,3 +1,3 @@
 APPROACH jx-halcyon_mem_resonance
-PLAY jx-halcyon_mem : 0.6 0.9
+PLAY jx-halcyon_mem : 0.6 1.5
 STOP jx-halcyon_mem_break : 1.1

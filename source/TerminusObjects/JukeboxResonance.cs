@@ -1,60 +1,159 @@
+using System.Collections.Generic;
 using System.Linq;
+using static UQLTerminus.RegionJukeboxRegistry;
 
 namespace UQLTerminus;
 
-public class JukeboxResonance(PlacedObject placedObj) : UpdatableAndDeletable()
+public class JukeboxResonance : UpdatableAndDeletable
 {
-    public JukeboxResonanceData data = placedObj.data as JukeboxResonanceData;
+    public class ReferencedOmni : OmniDirectionalSound
+    {
+        public ResonanceSound hook;
+        public float configurationVolume;
+        public float configurationPitch;
 
-    private DisembodiedLoopEmitter? emitter;
-    private DataPearl.AbstractDataPearl.DataPearlType? currentPearl;
+        public ReferencedOmni(ResonanceSound hook) : base(hook.GetPath(), false)
+        {
+            this.hook = hook;
+            configurationVolume = volume;
+            configurationPitch = pitch;
+        }
+    }
 
-    private int logTicker = 0;
+    private bool _duplicate;
+
+    public bool duplicate { get { return _duplicate; } private set { _duplicate = value; } }
+
+    private static readonly Dictionary<Room, HashSet<JukeboxResonance>> GlobalResonances = new();
+
+    public static IEnumerable<JukeboxResonance> GetResonances(Room room)
+    {
+        var list = GlobalResonances.GetValueOrDefault(room);
+        if (list == null) yield break;
+
+        foreach (JukeboxResonance reso in list)
+            if (!reso.duplicate) yield return reso;
+    }
+
+    private bool first = true;
+
+    public JukeboxResonanceData data;
+    public JukeboxResonance(PlacedObject placedObj)
+    {
+        data = placedObj.data as JukeboxResonanceData ?? new JukeboxResonanceData(placedObj);
+    }
+
+    // Make sure to unsubscribe when the object is destroyed
+    public override void Destroy()
+    {
+        base.Destroy();
+        GlobalResonances[room].Remove(this);
+    }
 
     public override void Update(bool eu)
     {
         base.Update(eu);
-        RegionJukeboxRegistry.RegionToJukeboxes.TryGetValue(room.world.region, out var jukeboxList);
+
+        if (room == null) return;
+
+        if (first)
+        {
+            (GlobalResonances[room] =
+                GlobalResonances.GetValueOrDefault(room)
+                ?? new()).Add(this);
+            first = false;
+        }
+
+        if (room.PlayersInRoom.Count == 0) return;
+
+        if (!data.owner.active) Destroy();
+
+        duplicate = room.roomSettings.placedObjects.Any(obj =>
+            obj.data is JukeboxResonanceData resoData
+            && resoData.ID == data.ID
+            && resoData.owner != data.owner);
+
+        if (duplicate) return;
+
+        RegionToJukeboxes.TryGetValue(room.world.region, out var jukeboxList);
         var jukeboxInfo = jukeboxList?.FirstOrDefault(j => j.JukeboxID == data.ID);
-        if (logTicker > 30)
+        var mic = room.game.cameras[0].virtualMicrophone;
+
+        if (jukeboxInfo == null)
         {
-            string isIt = jukeboxInfo?.isPlaying ?? false ? "" : " not";
-            UnityEngine.Debug.Log($"[{UQLTerminus.info.Metadata.Name}] Pearl {jukeboxInfo?.CurrentPearl} is{isIt} playing!");
-            logTicker = 0;
+            mic.ambientSoundPlayers.RemoveAll(test => test.GetType() == typeof(ReferencedOmni));
+            return;
         }
-        if (jukeboxInfo != null && jukeboxInfo.isPlaying)
+
+        mic.ambientSoundPlayers.RemoveAll(test => test.aSound is ReferencedOmni sound
+                                                  && sound.hook.isFinished());
+
+        foreach (AmbientSoundPlayer soundPlayer in mic.ambientSoundPlayers)
         {
-            var pearlType = jukeboxInfo.CurrentPearl;
-            var soundRefs = Hooks.PearlSoundsDict[pearlType];
+            if (!(soundPlayer.aSound is ReferencedOmni sound)) continue;
 
-            var approach = soundRefs.Approach;
+            if (!MultiFadeManager.isFading(sound, "configurationVolume"))
+                sound.configurationVolume = data.volume;
+            
+            sound.volume = sound.hook.resonanceVolume * sound.configurationVolume;
 
-            float finalVolume = approach.Volume * data.volume;
-            float finalPitch = approach.BeatScale * data.pitch;
+            if (!MultiFadeManager.isFading(sound, "configurationPitch"))
+                sound.configurationPitch = data.pitch;
 
-            // Play or update looping sound in this resonance room
-            if (pearlType != currentPearl || emitter == null)
-            {
-                emitter?.Destroy();
-                emitter = JukeboxObject.MusicDisembodiedSound(approach.Path, room, vol: finalVolume, pitch: finalPitch);
-                UnityEngine.Debug.Log($"{emitter}");
-                currentPearl = pearlType;
-            }
+            sound.pitch = sound.hook.soundData.BeatScale * sound.configurationPitch;
         }
-        /*else
-        {
-            // No jukebox or no pearl: stop any looping approach sound playing here
-            emitter?.Destroy();
-            emitter = null;
-            currentPearl = null;
-        }*/
-
-        logTicker++;
     }
 
-    public override void Destroy()
+    public void ReloadSounds()
     {
-        base.Destroy();
-        emitter?.Destroy();
+        if (duplicate) return;
+        UQLTerminus.Log($"Reloading sounds for Jukebox Resonance of Jukebox {data.ID}");
+        var mic = room.game.cameras[0].virtualMicrophone;
+        RegionToJukeboxes.TryGetValue(room.world.region, out var jukeboxList);
+        var jukeboxInfo = jukeboxList?.FirstOrDefault(j => j.JukeboxID == data.ID);
+        if (jukeboxInfo == null) return;
+        jukeboxInfo.resonances.RemoveAll(sound => sound.isFinished());
+
+        HashSet<ResonanceSound> existingSounds = new();
+        
+        foreach (AmbientSoundPlayer soundPlayer in mic.ambientSoundPlayers)
+        {
+            if (!(soundPlayer.aSound is ReferencedOmni existOmni)) continue;
+            UQLTerminus.Log($"Modifying volume for existing sound {existOmni.hook.pearlType}");
+            existingSounds.Add(existOmni.hook);
+            MultiFadeManager.StopFade(existOmni, "volume");
+            existOmni.configurationVolume = existOmni.volume / existOmni.hook.resonanceVolume;
+            MultiFadeManager.FadeField(existOmni, "configurationVolume",
+                data.volume,
+                ResonanceSound.shiftFadeDuration);
+            MultiFadeManager.FadeField(existOmni, "configurationPitch",
+                data.pitch,
+                ResonanceSound.shiftFadeDuration);
+        }
+
+        foreach (ResonanceSound sound in jukeboxInfo.resonances)
+        {
+            if (existingSounds.Contains(sound)) continue;
+            UQLTerminus.Log($"Reloading sound {sound.pearlType} at {sound.resonanceVolume}");
+
+            if (mic.ambientSoundPlayers.Any(test => test.aSound is ReferencedOmni omni
+                &&
+                (omni.hook == sound || omni.hook.isFinished()))) continue;
+
+            var realizedSound = new ReferencedOmni(sound)
+            {
+                volume = 0f,
+                pitch = sound.soundData.BeatScale * data.pitch
+            };
+
+            MultiFadeManager.FadeField(realizedSound, "configurationVolume",
+                data.volume,
+                ResonanceSound.shiftFadeDuration);
+
+            mic.ambientSoundPlayers.Add(new AmbientSoundPlayer(mic, realizedSound));
+            UQLTerminus.Log($"Added realized sound for {sound.pearlType}");
+        }
+        
+        mic.ambientSoundPlayers.RemoveAll(test => test.aSound is ReferencedOmni omni && omni.hook.isFinished());
     }
 }

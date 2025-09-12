@@ -1,26 +1,5 @@
-using System.Collections.Generic;
 using UnityEngine;
 namespace UQLTerminus;
-
-public static class RegionJukeboxRegistry
-{
-    public class JukeboxInfo
-    {
-        public string JukeboxID;
-        public DataPearl.AbstractDataPearl.DataPearlType? CurrentPearl;
-
-        public bool isPlaying;
-
-        public JukeboxInfo(JukeboxObject jukebox)
-        {
-            JukeboxID = jukebox.data.ID;
-            CurrentPearl = jukebox.Pearl?.AbstractPearl.dataPearlType;
-            isPlaying = jukebox.isPlaying;
-        }
-    }
-
-    public static readonly Dictionary<Region, List<JukeboxInfo>> RegionToJukeboxes = new();
-}
 
 public class JukeboxObjectData : Pom.Pom.ManagedData
 {

@@ -9,7 +9,7 @@ using BepInEx.Logging;
 
 namespace UQLTerminus;
 
-[BepInPlugin("uql.terminus", "Local Terminus", "0.1.21")]
+[BepInPlugin("uql.terminus", "Local Terminus", "0.1.22")]
 public partial class UQLTerminus : BaseUnityPlugin
 {
 
@@ -19,8 +19,17 @@ public partial class UQLTerminus : BaseUnityPlugin
         On.RainWorld.PostModsInit += RainWorldOnPostModsInit;
         logger = Logger;
         info = Info;
-
     }
+
+    internal static void Log(string message)
+    {
+        UnityEngine.Debug.Log($"[{info.Metadata.Name}] " + message);
+    }
+
+    internal static void LogWarning(string message)
+    {
+        UnityEngine.Debug.LogWarning($"[{info.Metadata.Name}] " + message);
+    }    
 
     private bool IsInit;
 

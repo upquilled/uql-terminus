@@ -5,7 +5,7 @@ using System.Linq;
 
 namespace UQLTerminus;
 
-internal class Hooks
+public static class Hooks
 {
     public static readonly Dictionary<DataPearl.AbstractDataPearl.DataPearlType, PearlSoundRefs> PearlSoundsDict
 = new Dictionary<DataPearl.AbstractDataPearl.DataPearlType, PearlSoundRefs>();
@@ -35,7 +35,6 @@ internal class Hooks
         int firstSpace = line.IndexOf(' ');
         if (firstSpace < 0) return soundData; // no data
 
-        string type = line.Substring(0, firstSpace).Trim();
         string rest = line.Substring(firstSpace).Trim();
 
         // Check if line contains ':'
@@ -83,13 +82,49 @@ internal class Hooks
             throw new Exception("Pearl type not recognized!");
         }
     }
+
+    private static bool existsReso;
+
+    private static bool ReferencedOmniBypass(On.VirtualMicrophone.orig_ambientSoundCloseEnoughCheck orig,
+                                            VirtualMicrophone self,
+                                            AmbientSound A,
+                                            AmbientSound B) {
+
+        if (A is JukeboxResonance.ReferencedOmni)
+        {
+            if (A.volume != 0)
+            {
+                if (!existsReso) MultiFadeManager.FadeField(A, "volume", 0f,
+                    RegionJukeboxRegistry.ResonanceSound.shiftFadeDuration);
+                return true;
+            }
+            else if (existsReso) return true;
+        }
+        return orig(self, A, B);
+    }
+
+    private static void NewRoomBypass(On.VirtualMicrophone.orig_NewRoom orig, VirtualMicrophone self, Room room)
+    {
+        var list = JukeboxResonance.GetResonances(room);
+        UQLTerminus.Log(list.Count().ToString());
+        existsReso = false;
+        foreach (JukeboxResonance reso in list)
+        {
+            existsReso = true;
+            reso.ReloadSounds();
+        }
+        orig(self, room);
+    }
     public static void Apply()
     {
         Pom.Pom.RegisterManagedObject<JukeboxObject, JukeboxObjectData, Pom.Pom.ManagedRepresentation>("PearlJukebox", UQLTerminus.info.Metadata.Name);
         Pom.Pom.RegisterManagedObject<JukeboxResonance, JukeboxResonanceData, Pom.Pom.ManagedRepresentation>("JukeboxResonance", UQLTerminus.info.Metadata.Name);
         Pom.Pom.RegisterManagedObject<ScreenFilterObject, ScreenFilterObjectData, Pom.Pom.ManagedRepresentation>("ScreenFilter", UQLTerminus.info.Metadata.Name);
+        On.VirtualMicrophone.ambientSoundCloseEnoughCheck += ReferencedOmniBypass;
+        On.VirtualMicrophone.NewRoom += NewRoomBypass;        
     }
 }
+
 public class SoundData
 {
     public string Path = "";
