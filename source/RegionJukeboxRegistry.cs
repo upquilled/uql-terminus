@@ -1,4 +1,3 @@
-
 using static DataPearl.AbstractDataPearl;
 using System.Collections.Generic;
 using System.IO;
@@ -50,7 +49,6 @@ public static class RegionJukeboxRegistry
             {
                 resonances.Last().Stop();
             }
-            resonances.RemoveAll(sound => sound.isFinished());
         }
     }
 
@@ -61,8 +59,6 @@ public static class RegionJukeboxRegistry
         public float resonanceVolume = 0f;
 
         private bool _active = true;
-
-        public bool active { get => _active; private set => _active = value; }
         public DataPearlType pearlType;
 
         public JukeboxInfo parent;
@@ -84,13 +80,22 @@ public static class RegionJukeboxRegistry
 
         public void Stop()
         {
-            MultiFadeManager.FadeField(this, "resonanceVolume", 0f, fadeDuration);
-            active = false;
+            MultiFadeManager.FadeField(this, "resonanceVolume", 0f, fadeDuration,
+                        onFinish: ImmediateStop);
         }
 
-        public bool isFinished()
+        public void ImmediateStop()
         {
-            return resonanceVolume == 0 && !active;
+            parent.resonances.Remove(this);
+            _active = false;
+            parent.room.game.cameras[0].virtualMicrophone.ambientSoundPlayers.RemoveAll(x =>
+                x.aSound is JukeboxResonance.ReferencedOmni omni
+                && omni.hook == this);
+        }
+
+        public bool isActive()
+        {
+            return _active;
         }
     }
     public static readonly Dictionary<Region, List<JukeboxInfo>> RegionToJukeboxes = new();

@@ -17,7 +17,7 @@ public static class Hooks
         {
             try
             {
-                LoadPearlSound(filePath); // You can define this method to handle parsing + dict insertion
+                LoadPearlSound(filePath);
                 UQLTerminus.logger.LogInfo($"Loaded pearl sound from {filePath.Replace(Path.DirectorySeparatorChar, '/')}");
             }
             catch (Exception ex)
@@ -31,13 +31,11 @@ public static class Hooks
     {
         var soundData = new SoundData();
 
-        // Split line at the first space
         int firstSpace = line.IndexOf(' ');
-        if (firstSpace < 0) return soundData; // no data
+        if (firstSpace < 0) return soundData;
 
         string rest = line.Substring(firstSpace).Trim();
 
-        // Check if line contains ':'
         int colonIndex = rest.IndexOf(':');
         string pathPart = colonIndex >= 0 ? rest.Substring(0, colonIndex).Trim() : rest.Trim();
         string paramPart = colonIndex >= 0 ? rest.Substring(colonIndex + 1).Trim() : "";
@@ -90,15 +88,15 @@ public static class Hooks
                                             AmbientSound A,
                                             AmbientSound B) {
 
-        if (A is JukeboxResonance.ReferencedOmni)
+        if (A is JukeboxResonance.ReferencedOmni omni)
         {
-            if (A.volume != 0)
+            if (omni.hook.isActive())
             {
-                if (!existsReso) MultiFadeManager.FadeField(A, "volume", 0f,
+                if(!existsReso) MultiFadeManager.FadeField(A, "volume", 0f,
                     RegionJukeboxRegistry.ResonanceSound.shiftFadeDuration);
                 return true;
             }
-            else if (existsReso) return true;
+            return false;
         }
         return orig(self, A, B);
     }

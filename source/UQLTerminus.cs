@@ -9,7 +9,7 @@ using BepInEx.Logging;
 
 namespace UQLTerminus;
 
-[BepInPlugin("uql.terminus", "Local Terminus", "0.1.22")]
+[BepInPlugin("uql.terminus", "Local Terminus", "0.1.23")]
 public partial class UQLTerminus : BaseUnityPlugin
 {
 
@@ -56,6 +56,6 @@ public partial class UQLTerminus : BaseUnityPlugin
     {
         orig(self);
         Logger.LogInfo("Loading pearls after all mods have initialized");
-        Hooks.LoadPearlSounds(); // or whatever logic you need
+        Hooks.LoadPearlSounds();
     }
 }

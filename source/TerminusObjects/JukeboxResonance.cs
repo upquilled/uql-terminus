@@ -42,8 +42,6 @@ public class JukeboxResonance : UpdatableAndDeletable
     {
         data = placedObj.data as JukeboxResonanceData ?? new JukeboxResonanceData(placedObj);
     }
-
-    // Make sure to unsubscribe when the object is destroyed
     public override void Destroy()
     {
         base.Destroy();
@@ -85,9 +83,6 @@ public class JukeboxResonance : UpdatableAndDeletable
             return;
         }
 
-        mic.ambientSoundPlayers.RemoveAll(test => test.aSound is ReferencedOmni sound
-                                                  && sound.hook.isFinished());
-
         foreach (AmbientSoundPlayer soundPlayer in mic.ambientSoundPlayers)
         {
             if (!(soundPlayer.aSound is ReferencedOmni sound)) continue;
@@ -112,7 +107,6 @@ public class JukeboxResonance : UpdatableAndDeletable
         RegionToJukeboxes.TryGetValue(room.world.region, out var jukeboxList);
         var jukeboxInfo = jukeboxList?.FirstOrDefault(j => j.JukeboxID == data.ID);
         if (jukeboxInfo == null) return;
-        jukeboxInfo.resonances.RemoveAll(sound => sound.isFinished());
 
         HashSet<ResonanceSound> existingSounds = new();
         
@@ -122,7 +116,8 @@ public class JukeboxResonance : UpdatableAndDeletable
             UQLTerminus.Log($"Modifying volume for existing sound {existOmni.hook.pearlType}");
             existingSounds.Add(existOmni.hook);
             MultiFadeManager.StopFade(existOmni, "volume");
-            existOmni.configurationVolume = existOmni.volume / existOmni.hook.resonanceVolume;
+            existOmni.configurationVolume = existOmni.hook.resonanceVolume == 0f
+                                            ? 0f : existOmni.volume / existOmni.hook.resonanceVolume;
             MultiFadeManager.FadeField(existOmni, "configurationVolume",
                 data.volume,
                 ResonanceSound.shiftFadeDuration);
@@ -137,12 +132,12 @@ public class JukeboxResonance : UpdatableAndDeletable
             UQLTerminus.Log($"Reloading sound {sound.pearlType} at {sound.resonanceVolume}");
 
             if (mic.ambientSoundPlayers.Any(test => test.aSound is ReferencedOmni omni
-                &&
-                (omni.hook == sound || omni.hook.isFinished()))) continue;
+                && omni.hook == sound)) continue;
 
             var realizedSound = new ReferencedOmni(sound)
             {
                 volume = 0f,
+                configurationVolume = 0f,
                 pitch = sound.soundData.BeatScale * data.pitch
             };
 
@@ -153,7 +148,5 @@ public class JukeboxResonance : UpdatableAndDeletable
             mic.ambientSoundPlayers.Add(new AmbientSoundPlayer(mic, realizedSound));
             UQLTerminus.Log($"Added realized sound for {sound.pearlType}");
         }
-        
-        mic.ambientSoundPlayers.RemoveAll(test => test.aSound is ReferencedOmni omni && omni.hook.isFinished());
     }
 }

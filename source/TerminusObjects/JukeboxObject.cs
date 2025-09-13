@@ -1,7 +1,6 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
-using System.Linq;
 using RWCustom;
 using UnityEngine;
 
@@ -43,11 +42,11 @@ public class JukeboxObject : UpdatableAndDeletable, IDrawable
         if (!Hooks.PearlSoundsDict.TryGetValue(Pearl.AbstractPearl.dataPearlType, out pearlSoundRefs))
         return;
 
-        // Look up region
+        // registry lookup
+        
         var region = room?.world?.region;
         if (region == null) return;
 
-        // Look up jukebox list
         if (RegionJukeboxRegistry.RegionToJukeboxes.TryGetValue(region, out var jukeboxList))
         {
             var info = jukeboxList.Find(j => j.JukeboxID == data.ID);
@@ -65,7 +64,10 @@ public class JukeboxObject : UpdatableAndDeletable, IDrawable
     {
         data = placedObj.data as JukeboxObjectData ?? new JukeboxObjectData(placedObj);
         placedObject = placedObj;
-        if (data.initiateWithPearl)
+        // will fix this later
+
+
+        /* if (data.initiateWithPearl)
         {
             WorldCoordinate coord = room.ToWorldCoordinate(placedObject.pos);
             EntityID id = room.game.GetNewID();
@@ -81,12 +83,9 @@ public class JukeboxObject : UpdatableAndDeletable, IDrawable
                     data.defaultPearl      // Pearl type (change as needed)
             );
             Pearl = new DataPearl(abstractPearl, room.world);
+            Pearl.firstChunk.pos = placedObj.pos;
             room.AddObject(Pearl);
-        }
-        else
-        {
-            data.initiateWithPearl = false;
-        }
+        } */
 
         this.room = room;
 
@@ -98,13 +97,13 @@ public class JukeboxObject : UpdatableAndDeletable, IDrawable
 
     private void PearlUpdate()
     {
-        bool sameRoom = room.game.AlivePlayers.Any(p => p.Room.index == room.abstractRoom.index);
+        bool sameRoom = room.PlayersInRoom.Count > 0;
         updatePearlStatus();
         if (Pearl.grabbedBy.Count == 0)
         {
             grabbedBefore = true;
-            Pearl.firstChunk.vel *= Custom.LerpMap(Pearl.firstChunk.vel.magnitude, 1f, 6f, 0.999f, 0.9f);
-            Pearl.firstChunk.vel += Vector2.ClampMagnitude(placedObject.pos - Pearl.firstChunk.pos, 100f) / 100f * 0.4f;
+            Pearl.firstChunk.vel *= Custom.LerpMap(Pearl.firstChunk.vel.magnitude, 1f, 6f, 0.999f, 0.999f-data.damping);
+            Pearl.firstChunk.vel += Vector2.ClampMagnitude(placedObject.pos - Pearl.firstChunk.pos, 100f) / 100f * 0.4f * data.pullStrength;
             Pearl.gravity = 0f;
             if (sameRoom) { MusicControl(); return; }
         }

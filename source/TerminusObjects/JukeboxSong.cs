@@ -28,6 +28,7 @@ public class JukeboxSong : Song
             }
             else
             {
+                musicPlayer.song.FadeOut(1.5f);
                 musicPlayer.nextSong = song;
                 musicPlayer.nextSong.playWhenReady = false;
             }

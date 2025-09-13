@@ -6,18 +6,21 @@ using System.Reflection;
 
 public static class MultiFadeManager
 {
-    private class FadeEntry
+    public class FadeEntry
     {
         public float start, target, duration, elapsed;
         public Func<float, float> smooth;
         public Coroutine coroutine;
+
+        public Action onFinish;
     }
 
     private static Dictionary<(object, string), FadeEntry> activeFades = new();
 
-    public static void FadeField(object targetObject, string fieldName, float targetValue, float duration, Func<float, float> smooth = null)
+    public static void FadeField(object targetObject, string fieldName, float targetValue, float duration, Func<float, float>? smooth = null, Action? onFinish = null)
     {
         if (smooth == null) smooth = t => t;
+        if (onFinish == null) onFinish = () => { };
 
         FieldInfo field = targetObject.GetType().GetField(fieldName, BindingFlags.Instance | BindingFlags.Public);
         if (field == null) throw new ArgumentException($"Field '{fieldName}' not found on object of type {targetObject.GetType().Name}");
@@ -34,7 +37,8 @@ public static class MultiFadeManager
             target = targetValue,
             duration = duration,
             elapsed = 0f,
-            smooth = smooth
+            smooth = smooth,
+            onFinish = onFinish
         };
 
         entry.coroutine = MultiFadeManagerRunner.Instance.StartCoroutine(FadeCoroutine(targetObject, field, entry, key));
@@ -57,7 +61,7 @@ public static class MultiFadeManager
 
         field.SetValue(targetObject, entry.target);
 
-        // Remove completed fade
+        entry.onFinish();
         activeFades.Remove(key);
     }
 
@@ -77,6 +81,11 @@ public static class MultiFadeManager
     public static bool isFading(object targetObject, string fieldName)
     {
         return activeFades.ContainsKey((targetObject, fieldName));
+    }
+
+    public static FadeEntry? GetFade(object targetObject, string fieldName)
+    {
+        return activeFades.GetValueOrDefault((targetObject, fieldName));
     }
 
 
