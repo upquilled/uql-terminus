@@ -2,95 +2,95 @@
 
   <ItemGroup>
     <Reference Include="BepInEx">
-      <HintPath>Managed/BepInEx.dll</HintPath>
+      <HintPath>../../../../../BepInEx/Core/BepInEx.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="BepInEx.Preloader">
-      <HintPath>Managed/BepInEx.Preloader.dll</HintPath>
+      <HintPath>../../../../../BepInEx/Core/BepInEx.Preloader.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="0Harmony">
-      <HintPath>Managed/0Harmony.dll</HintPath>
+      <HintPath>../../../../../BepInEx/Core/0Harmony.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Mono.Cecil">
-      <HintPath>Managed/Mono.Cecil.dll</HintPath>
+      <HintPath>../../../../../BepInEx/Core/Mono.Cecil.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Mono.Cecil.Mdb">
-      <HintPath>Managed/Mono.Cecil.Mdb.dll</HintPath>
+      <HintPath>../../../../../BepInEx/Core/Mono.Cecil.Mdb.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Mono.Cecil.Pdb">
-      <HintPath>Managed/Mono.Cecil.Pdb.dll</HintPath>
+      <HintPath>../../../../../BepInEx/Core/Mono.Cecil.Pdb.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Mono.Cecil.Rocks">
-      <HintPath>Managed/Mono.Cecil.Rocks.dll</HintPath>
+      <HintPath>../../../../../BepInEx/Core/Mono.Cecil.Rocks.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="MonoMod.RuntimeDetour">
-      <HintPath>Managed/MonoMod.RuntimeDetour.dll</HintPath>
+      <HintPath>../../../../../BepInEx/Core/MonoMod.RuntimeDetour.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="MonoMod.Utils">
-      <HintPath>Managed/MonoMod.Utils.dll</HintPath>
+      <HintPath>../../../../../BepInEx/Core/MonoMod.Utils.dll</HintPath>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="MonoMod.Utils">
+      <HintPath>../../../../Managed/Assembly-CSharp-firstpass.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="PUBLIC-Assembly-CSharp">
-      <HintPath>Managed/PUBLIC-Assembly-CSharp.dll</HintPath>
+      <HintPath>../../../../../BepInEx/utils/PUBLIC-Assembly-CSharp.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="HOOKS-Assembly-CSharp">
-      <HintPath>Managed/HOOKS-Assembly-CSharp.dll</HintPath>
-      <Private>False</Private>
-    </Reference>
-    <Reference Include="Assembly-CSharp-firstpass">
-      <HintPath>Managed/Assembly-CSharp-firstpass.dll</HintPath>
+      <HintPath>../../../../../BepInEx/plugins/HOOKS-Assembly-CSharp.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Unity.Mathematics">
-      <HintPath>Managed/Unity.Mathematics.dll</HintPath>
+      <HintPath>../../../../Managed/Unity.Mathematics.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="UnityEngine">
-      <HintPath>Managed/UnityEngine.dll</HintPath>
+      <HintPath>../../../../Managed/UnityEngine.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="UnityEngine.CoreModule">
-      <HintPath>Managed/UnityEngine.CoreModule.dll</HintPath>
+      <HintPath>../../../../Managed/UnityEngine.CoreModule.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="UnityEngine.InputLegacyModule">
-      <HintPath>Managed/UnityEngine.InputLegacyModule.dll</HintPath>
+      <HintPath>../../../../Managed/UnityEngine.InputLegacyModule.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="UnityEngine.ImageConversionModule">
-      <HintPath>Managed/UnityEngine.ImageConversionModule.dll</HintPath>
+      <HintPath>../../../../Managed/UnityEngine.ImageConversionModule.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="UnityEngine.UI">
-      <HintPath>Managed/UnityEngine.UI.dll</HintPath>
+      <HintPath>../../../../Managed/UnityEngine.UI.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="GoKit">
-      <HintPath>Managed/GoKit.dll</HintPath>
+      <HintPath>../../../../Managed/GoKit.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Rewired_Core">
-      <HintPath>Managed/Rewired_Core.dll</HintPath>
+      <HintPath>../../../../Managed/Rewired_Core.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="UnityEngine.AudioModule">
-      <HintPath>Managed/UnityEngine.AudioModule.dll</HintPath>
+      <HintPath>../../../../Managed/UnityEngine.AudioModule.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Steamworks">
-      <HintPath>Managed/com.rlabrecque.steamworks.net.dll</HintPath>
+      <HintPath>../../../../Managed/com.rlabrecque.steamworks.net.dll</HintPath>
       <Private>False</Private>
     </Reference>
     <Reference Include="Pom">
-	    <HintPath>Managed/Pom.dll</HintPath>
+	    <HintPath>curled/Pom.dll</HintPath>
       <Private>False</Private>
 	  </Reference>
   </ItemGroup>
@@ -111,6 +111,8 @@
 
   <Target Name="CleanPlugins" BeforeTargets="BeforeBuild">
     <RemoveDir Directories="$(OutputPath)"/>
+    <MakeDir Directories="curled" Condition="!Exists('curled')"/>
+    <Exec Command="powershell -Command &quot;Invoke-WebRequest -Uri 'https://github.com/Rain-World-Modding/Pom/raw/refs/heads/master/mod/plugins/Pom.dll' -OutFile 'curled/Pom.dll'&quot;" />
   </Target>
 
 </Project>

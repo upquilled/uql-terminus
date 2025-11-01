@@ -1,15 +1,13 @@
 ﻿using System;
 using System.Security;
-using System.Security.Permissions;
 using BepInEx;
 using BepInEx.Logging;
 
 [module: UnverifiableCode]
-[assembly: SecurityPermission(SecurityAction.RequestMinimum, SkipVerification = true)]
 
 namespace UQLTerminus;
 
-[BepInPlugin("uql.terminus", "Local Terminus", "0.1.23")]
+[BepInPlugin("uql.terminus", "Local Terminus", "0.1.24")]
 public partial class UQLTerminus : BaseUnityPlugin
 {
 

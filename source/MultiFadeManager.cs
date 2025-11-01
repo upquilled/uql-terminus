@@ -85,7 +85,7 @@ public static class MultiFadeManager
 
     public static FadeEntry? GetFade(object targetObject, string fieldName)
     {
-        return activeFades.GetValueOrDefault((targetObject, fieldName));
+        return activeFades.TryGetValue((targetObject, fieldName), out var value) ? value : null;
     }
 
 

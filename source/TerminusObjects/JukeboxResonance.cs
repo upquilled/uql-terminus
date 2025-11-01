@@ -28,8 +28,7 @@ public class JukeboxResonance : UpdatableAndDeletable
 
     public static IEnumerable<JukeboxResonance> GetResonances(Room room)
     {
-        var list = GlobalResonances.GetValueOrDefault(room);
-        if (list == null) yield break;
+        if (!GlobalResonances.TryGetValue(room, out var list)) yield break;
 
         foreach (JukeboxResonance reso in list)
             if (!reso.duplicate) yield return reso;
@@ -57,8 +56,8 @@ public class JukeboxResonance : UpdatableAndDeletable
         if (first)
         {
             (GlobalResonances[room] =
-                GlobalResonances.GetValueOrDefault(room)
-                ?? new()).Add(this);
+                GlobalResonances.TryGetValue(room, out var resonances)
+                ? resonances : new()).Add(this);
             first = false;
         }
 

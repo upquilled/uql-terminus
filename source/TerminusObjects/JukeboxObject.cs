@@ -91,7 +91,8 @@ public class JukeboxObject : UpdatableAndDeletable, IDrawable
 
         Region region = room.world.region;
 
-        (RegionJukeboxRegistry.RegionToJukeboxes[region] = RegionJukeboxRegistry.RegionToJukeboxes.GetValueOrDefault(region)
+        (RegionJukeboxRegistry.RegionToJukeboxes[region] =
+            RegionJukeboxRegistry.RegionToJukeboxes.TryGetValue(region, out var jukebox) ? jukebox : null
         ?? new List<RegionJukeboxRegistry.JukeboxInfo>()).Add(new RegionJukeboxRegistry.JukeboxInfo(this));
     }
 

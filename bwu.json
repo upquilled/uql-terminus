@@ -1,9 +1,6 @@
 {
-  "Name": "Local Terminus",
-  "ID": "uql.terminus",
-  "Version": "0.1.23",
   "WorkshopID": 3557599063,
-  "LatestGameVersion": "v1.10.4",
+  "LatestGameVersion": "v1.11.3",
   "UpdateTitle": true,
   "UpdateDescription": true,
   "MarkAsPublic": false,

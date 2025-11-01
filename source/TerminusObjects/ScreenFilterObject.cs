@@ -8,7 +8,7 @@ public class ScreenFilterObject : UpdatableAndDeletable
 
 	private Room occupiedRoom;
 
-	private PlacedObject trackedObject;
+	private PlacedObject? trackedObject;
 
 	private Vector2? objectPos;
 
@@ -55,20 +55,5 @@ public class ScreenFilterObject : UpdatableAndDeletable
 			trackedObject.pos = pos;
 			objectPos = null;
 		}
-	}
-
-	public override void Destroy()
-	{
-		base.Destroy();
-
-		if (trackedObject != null && objectPos.HasValue)
-		{
-			trackedObject.pos = objectPos.Value;
-			objectPos = null;
-		}
-
-		trackedObject = null;
-		placedObject = null;
-		occupiedRoom = null;
 	}
 }
