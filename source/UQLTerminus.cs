@@ -7,7 +7,7 @@ using BepInEx.Logging;
 
 namespace UQLTerminus;
 
-[BepInPlugin("uql.terminus", "Local Terminus", "0.1.24")]
+[BepInPlugin("uql.terminus", "Local Terminus", "0.1.25")]
 public partial class UQLTerminus : BaseUnityPlugin
 {
 
@@ -21,12 +21,12 @@ public partial class UQLTerminus : BaseUnityPlugin
 
     internal static void Log(string message)
     {
-        UnityEngine.Debug.Log($"[{info.Metadata.Name}] " + message);
+        UnityEngine.Debug.Log($"[Info   :{info.Metadata.Name}] " + message);
     }
 
     internal static void LogWarning(string message)
     {
-        UnityEngine.Debug.LogWarning($"[{info.Metadata.Name}] " + message);
+        UnityEngine.Debug.LogWarning($"[Warning:{info.Metadata.Name}] " + message);
     }    
 
     private bool IsInit;

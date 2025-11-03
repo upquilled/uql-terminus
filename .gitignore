@@ -1,6 +1,7 @@
 source/obj/**
 source/curled/**
 world/jx/map_jx_backup.png
+.vs/**
 
 .DS_Store
 Thumbs.db

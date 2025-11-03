@@ -37,7 +37,7 @@
       <HintPath>../../../../../BepInEx/Core/MonoMod.Utils.dll</HintPath>
       <Private>False</Private>
     </Reference>
-    <Reference Include="MonoMod.Utils">
+    <Reference Include="Assembly-CSharp-firstpass">
       <HintPath>../../../../Managed/Assembly-CSharp-firstpass.dll</HintPath>
       <Private>False</Private>
     </Reference>
