@@ -104,7 +104,6 @@ public static class Hooks
     private static void NewRoomBypass(On.VirtualMicrophone.orig_NewRoom orig, VirtualMicrophone self, Room room)
     {
         var list = JukeboxResonance.GetResonances(room);
-        UQLTerminus.Log(list.Count().ToString());
         existsReso = false;
         foreach (JukeboxResonance reso in list)
         {
