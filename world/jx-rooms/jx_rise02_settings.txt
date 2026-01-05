@@ -1,6 +1,6 @@
 Template: jx_settingstemplate_fissures
 DangerType: Flood
 Palette: 1802
-Effects: LightRain-0-20-20, SilenceWater-0.1847826-30-30, Darkness-0-40-40, WaterGlowworm-0.8478261-50-50, 
+Effects: LightRain-0-20-20, SilenceWater-0.1847826-207-37, Darkness-0-262-94, WaterGlowworm-0.75-30-30, 
 PlacedObjects: FairyParticleSettings><243.33><284.1447><523~-337.3398~0~2.717391~1.630435~0.06521739~1~1~114.3477~234.3478~40~76.08695~5~14.34791~180~180~0.6739131~0.8478261~0.1304348~0.09782609~0.1630435~0.2282609~0.5~0.4673913~6.086957~Pixel~SIN_IO~QUAD_IN~25.65215~0.173913~0, 
-AmbientSounds: OMNI><weird deep hole.wav><724.4432><446.4482><0.07608695><1, OMNI><jx-treatment_facility.ogg><462.782><295.6974><0.02173913><1, OMNI><jx-omicron.ogg><709.0977><313.6203><0.02173913><0.6673913, 
+AmbientSounds: OMNI><weird deep hole.wav><724.4432><446.4482><0.07608695><1, OMNI><jx-treatment_facility.ogg><527.782><450.6974><0.02173913><1, OMNI><jx-omicron.ogg><709.0977><313.6203><0.06521739><0.6673913, SPOT><jx-pipestream.ogg><723.545><202.5551><0.07608695><1.215217><447.545><273.5551><-89.35535><-28.35535><0><0.1, SPOT><jx-treatment_facility.ogg><692.4069><83.62402><0.06521739><1.215217><443.4069><265.624><-76.35535><-39.35535><0><0.1, 
