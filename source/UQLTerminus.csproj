@@ -93,6 +93,10 @@
 	    <HintPath>curled/Pom.dll</HintPath>
       <Private>False</Private>
 	  </Reference>
+    <Reference Include="RegionKit">
+	    <HintPath>curled/Pom.dll</HintPath>
+      <Private>False</Private>
+	  </Reference>
   </ItemGroup>
 
 
@@ -113,6 +117,7 @@
     <RemoveDir Directories="$(OutputPath)"/>
     <MakeDir Directories="curled" Condition="!Exists('curled')"/>
     <Exec Command="powershell -Command &quot;Invoke-WebRequest -Uri 'https://github.com/Rain-World-Modding/Pom/raw/refs/heads/master/mod/plugins/Pom.dll' -OutFile 'curled/Pom.dll'&quot;" />
+    <Exec Command="powershell -Command &quot;Invoke-WebRequest -Uri 'https://github.com/Rain-World-Modding/RegionKit/raw/refs/heads/main/mod/plugins/RegionKit.dll' -OutFile 'curled/RegionKit.dll'&quot;" />
   </Target>
 
 </Project>

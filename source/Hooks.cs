@@ -2,7 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-
+using UnityEngine;
 namespace UQLTerminus;
 
 public static class Hooks
@@ -86,13 +86,14 @@ public static class Hooks
     private static bool ReferencedOmniBypass(On.VirtualMicrophone.orig_ambientSoundCloseEnoughCheck orig,
                                             VirtualMicrophone self,
                                             AmbientSound A,
-                                            AmbientSound B) {
+                                            AmbientSound B)
+    {
 
         if (A is JukeboxResonance.ReferencedOmni omni)
         {
             if (omni.hook.isActive())
             {
-                if(!existsReso) MultiFadeManager.FadeField(A, "volume", 0f,
+                if (!existsReso) MultiFadeManager.FadeField(A, "volume", 0f,
                     RegionJukeboxRegistry.ResonanceSound.shiftFadeDuration);
                 return true;
             }
@@ -118,7 +119,39 @@ public static class Hooks
         Pom.Pom.RegisterManagedObject<JukeboxResonance, JukeboxResonanceData, Pom.Pom.ManagedRepresentation>("JukeboxResonance", UQLTerminus.info.Metadata.Name);
         Pom.Pom.RegisterManagedObject<ScreenFilterObject, ScreenFilterObjectData, Pom.Pom.ManagedRepresentation>("ScreenFilter", UQLTerminus.info.Metadata.Name);
         On.VirtualMicrophone.ambientSoundCloseEnoughCheck += ReferencedOmniBypass;
-        On.VirtualMicrophone.NewRoom += NewRoomBypass;        
+        On.VirtualMicrophone.NewRoom += NewRoomBypass;
+        On.LightSource.DrawSprites += LightSourcePatch.DrawSprites;
+        On.LightSource.InitiateSprites += LightSourcePatch.InitiateSprites;
+    }
+    private static class LightSourcePatch
+    {
+
+        private static readonly HashSet<LightSource> dirty = new();
+        private static System.Reflection.FieldInfo shaderDirtyField =
+        typeof(LightSource).GetField("shaderDirty",
+            System.Reflection.BindingFlags.Public |
+            System.Reflection.BindingFlags.NonPublic |
+            System.Reflection.BindingFlags.Instance);
+        public static void DrawSprites(On.LightSource.orig_DrawSprites orig, LightSource self,
+            RoomCamera.SpriteLeaser sLeaser,
+            RoomCamera rCam, float timeStacker,
+            Vector2 camPos)
+        {
+            if (dirty.Contains(self) && sLeaser.sprites[0].shader.name == "NoLitWater") {
+                UQLTerminus.Log($"Corrected flat shading for light source");
+                shaderDirtyField.SetValue(self, true);
+                dirty.Remove(self);
+            }
+            orig(self, sLeaser, rCam, timeStacker, camPos);
+        }
+
+        public static void InitiateSprites(On.LightSource.orig_InitiateSprites orig, LightSource self,
+            RoomCamera.SpriteLeaser sLeaser,
+            RoomCamera rCam)
+        {
+            orig(self, sLeaser, rCam);
+            if (self.flat) dirty.Add(self);
+        }
     }
 }
 

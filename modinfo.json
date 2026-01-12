@@ -1,7 +1,7 @@
 {
 	"id": "uql.terminus",
 	"name": "Local Terminus",
-	"version": "0.1.29",
+	"version": "0.1.30",
 	"authors": "upquilled",
 	"description": "Venture beyond the Chasing Wind Superstructure",
 	"requirements": [ "myr.chasing_wind", "uql.extra" ],
