@@ -1,7 +1,7 @@
 {
 	"id": "uql.terminus",
 	"name": "Local Terminus",
-	"version": "0.1.30",
+	"version": "0.1.31",
 	"authors": "upquilled",
 	"description": "Venture beyond the Chasing Wind Superstructure",
 	"requirements": [ "myr.chasing_wind", "uql.extra" ],
@@ -27,10 +27,12 @@
 				"!music/songs/jx-capricorn.ogg",
 				"!music/songs/jx-suntimer.ogg",
 				"loadedsoundeffects/ambient/jx-rotary.ogg",
-				"loadedsoundeffects/ambient/jx-beyond.ogg",
         			"**/.vs/**",
 				"text/**",
-				"modify/CustomPearls.txt"
+				"modify/CustomPearls.txt",
+				"**/*ABSTRACTFALL*",
+				"**/*abstractfall*",
+				"palettes/palette1801.png"
 		]
 	}
 }
