@@ -14,9 +14,11 @@ JX_FALL11 : DISCONNECTED, JX_FALL10, JX_FALL14, JX_FALL12
 JX_FALL12 : JX_FALL13, JX_FALL11
 JX_FALL13 : JX_FALL14, JX_F_S04, JX_FALL12, JX_FALL15
 JX_FALL14 : DISCONNECTED, JX_FALL13, JX_FALL11
-JX_FALL15 : JX_FALLHUB, JX_FALL13
+JX_FALL15 : JX_FALL16, JX_FALL13
+JX_FALL16 : JX_FALL17, JX_F_S05, JX_FALL15
+JX_FALL17 : JX_FALL16, JX_FALLHUB
 
-JX_FALLHUB : JX_FALL09, DISCONNECTED, JX_FALL10, DISCONNECTED, DISCONNECTED, JX_FALL15, DISCONNECTED
+JX_FALLHUB : JX_FALL09, DISCONNECTED, JX_FALL10, DISCONNECTED, DISCONNECTED, JX_FALL17, DISCONNECTED
 
 JX_FALLBACK : JX_FALL09, JX_F_S03, JX_FALL10
 JX_FALLPIPE : JX_FALL04, JX_FALLTRADER, JX_FALLSNAGGING
@@ -35,6 +37,7 @@ JX_F_S01 : JX_FALL03 : SHELTER
 JX_F_S02 : JX_RISE03 : SHELTER
 JX_F_S03 : JX_FALLBACK : SHELTER
 JX_F_S04 : JX_FALL13 : SHELTER
+JX_F_S05 : JX_FALL16 : SHELTER
 
 JX_C_A01 : JX_FALL10, JX_FALL02, JX_C_A02
 JX_C_A02 : JX_C_A01, JX_FALL01
@@ -47,7 +50,7 @@ CREATURES
 
 OFFSCREEN : 0-Scavenger-10, 0-EliteScavenger-2-{Night}
 
-JX_FALL02 : 3-Strawberry, 4-Leech-3, 5-Snail, 5-BigEel-{PreCycle}
+JX_FALL02 : 3-Strawberry, 4-Leech-3, 5-Snail, 5-EelLizard-{PreCycle}
 JX_FALL03 : 3-Snail-2, 3-Salamander-{PreCycle}, 4-Leech-4
 JX_FALL04 : 3-Snail, 3-BigEel-{PreCycle}
 JX_FALL05 : 5-Snail, 6-Snail
@@ -56,18 +59,20 @@ JX_FALL07 : 3-Centipede, 3-SmallCentipede-2
 JX_FALL08 : 2-Dropwig
 JX_FALL09 : 3-BigSpider
 JX_FALL10 : 4-Snail
-JX_FALL11 : 4-Dropwig, 5-BigSpider, 6-Black, 7-Leech-6, 8-Leech-2
+JX_FALL11 : 4-Dropwig, 5-BigSpider, 6-Black, 7-Leech-6, 8-Leech-2, 6-EelLizard-{PreCycle}
 JX_FALL12 : 2-Snail, 3-Leech-3, 4-Leech-4
 JX_FALL13 : 4-Dropwig, 5-Snail, 6-Leech-3
 JX_FALL14 : 3-Snail, 4-Leech-6
-JX_FALL15 : 2-BigSpider, 3-Snail, 4-JetFish-2, 5-Leech-5, 6-Leech-3
+JX_FALL15 : 2-BigSpider, 3-Snail, 4-JetFish-2, 5-Leech-5, 6-Leech-3, 3-EelLizard-{PreCycle}
+JX_FALL16 : 3-Snail, 3-EelLizard-{PreCycle}, 4-JetFish-2, 5-Leech-3, 6-Leech-6, 7-Dropwig
+JX_FALL17 : 2-BigSpider, 3-Dropwig, 4-JetFish-2, 5-Snail, 5-Salamander-{PreCycle}, 6-Leech-5
 
-JX_FALLHUB : 7-Black-2, 8-Mimic-{5}, 9-Leech-4, 10-Snail-2, 10-Salamander-{PreCycle}, 11-Leech-7, 12-JetFish, 12-BigEel-{PreCycle}
+JX_FALLHUB : 7-Black-2, 8-Mimic-{5}, 9-Leech-4, 10-Snail-2, 10-Salamander-{PreCycle}, 11-Leech-7, 12-JetFish, 12-EelLizard-{PreCycle}
 JX_FALLBACK : 3-Snail
 
 JX_RISE01 : 4-Leech-3, 4-Salamander-{PreCycle}, 3-Dropwig
-JX_RISE03 : 3-Strawberry
-JX_RISE04 : 2-Strawberry, 2-BigEel-{PreCycle}, 3-Mimic-{4}
+JX_RISE03 : 3-Strawberry, 3-EelLizard{PreCycle}
+JX_RISE04 : 2-Strawberry, 2-EelLizard-{PreCycle}, 3-Mimic-{4}
 JX_RISE05 : 2-EggBug, 3-Dropwig
 JX_RISE06 : 2-Dropwig
 
