@@ -52,7 +52,7 @@ OFFSCREEN : 0-Scavenger-10, 0-EliteScavenger-2-{Night}
 
 JX_FALL02 : 3-Strawberry, 4-Leech-3, 5-Snail, 5-EelLizard-{PreCycle}
 JX_FALL03 : 3-Snail-2, 3-Salamander-{PreCycle}, 4-Leech-4
-JX_FALL04 : 3-Snail, 3-BigEel-{PreCycle}
+JX_FALL04 : 3-Snail, 3-EelLizard-{PreCycle}
 JX_FALL05 : 5-Snail, 6-Snail
 JX_FALL06 : 2-Snail, 3-Snail-2, 4-Leech-3, 5-Leech-5, 5-Salamander-{PreCycle}
 JX_FALL07 : 3-Centipede, 3-SmallCentipede-2
