@@ -27,5 +27,7 @@ scavTreasuryItems: DataPearl-0.1, Physalis-0.2, ScavengerBomb-0.142, Lantern-0.2
 dropwigBaitItems: DangleFruit-0.5, ExplosiveSpear-0.3, Spear-0.3, ScavengerBomb-0.5, Physalis-0.7, KarmaFlower-0.5
 Room_Attr: JX_FALL04: Scavenger-Like,
 Room_Attr: JX_FALL05: Scavenger-Like,
+Room_Attr: JX_FALL19: Scavenger-Avoid,
+Room_Attr: JX_FALL20: Scavenger-Like,
 Room_Attr: JX_FALLTREASURE: Scavenger-Stay,
 Room_Attr: JX_RISE02: Centipede-Forbidden,SmallCentipede-Forbidden,Scavenger-Forbidden,DropBug-Forbidden,ZoopLizard-Forbidden,
