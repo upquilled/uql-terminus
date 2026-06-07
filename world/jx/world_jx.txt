@@ -1,3 +1,5 @@
+ROOMS
+
 JX_FALL01 : JX_RISE06, GATE_MF_JX, JX_FALL02, JX_C_A02
 JX_FALL02 : JX_FALL03, JX_FALL01, JX_C_A01 : SWARMROOM
 JX_FALL03 : JX_F_S01, JX_FALL04, JX_FALL02
@@ -74,15 +76,15 @@ JX_FALL17 : 2-BigSpider, 3-Dropwig, 4-JetFish-2, 5-Snail, 5-Salamander-{PreCycle
 JX_FALL18 : 3-Dropwig
 JX_FALL19 : 4-BigSpider, 5-Snail, 6-Leech-4
 JX_FALL20 : 3-BigSpider, 4-Dropwig
-JX_FALL21 : 3-Centipede-, 3-SmallCentipede
+JX_FALL21 : 3-Centipede, 3-SmallCentipede
 
-JX_FALLRX01 : 3-DropBug
+JX_FALLRX01 : 3-Dropwig
 
 JX_FALLHUB : 7-Black-2, 8-Mimic-{5}, 9-Leech-4, 10-Snail-2, 10-Salamander-{PreCycle}, 11-Leech-7, 12-JetFish, 12-EelLizard-{PreCycle}
 JX_FALLBACK : 3-Snail
 
 JX_RISE01 : 4-Leech-3, 4-Salamander-{PreCycle}, 3-Dropwig
-JX_RISE03 : 3-Strawberry, 3-EelLizard{PreCycle}
+JX_RISE03 : 3-Strawberry, 3-EelLizard-{PreCycle}
 JX_RISE04 : 2-Strawberry, 2-EelLizard-{PreCycle}, 3-Mimic-{4}
 JX_RISE05 : 2-EggBug, 3-Dropwig
 JX_RISE06 : 2-Dropwig
