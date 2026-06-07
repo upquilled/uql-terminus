@@ -1,9 +1,3 @@
-Subregion: Fissures
-Subregion: Local Terminus
-Subregion: Cyclic Intake Manifold
-Subregion: Outer Expanse
-Subregion: Rapid Absorption Matrix
-Subregion: Calcis
 pupSpawnChance: 0.05
 Room Setting Templates: Fissures, Fissuredeep, Fiscave
 Broken Shelters: Yellow: JX_F_S05
@@ -25,7 +19,15 @@ scavTradeItems: FlareBomb-0.05, SporePlant-0.2, ScavengerBomb-0.2, Mushroom-0.1,
 scavGearItems: ScavengerBomb-0.25, FirecrackerPlant-0.08, SporePlant-0.2, Rock-0.5, Lantern-0.6
 scavTreasuryItems: DataPearl-0.1, Physalis-0.2, ScavengerBomb-0.142, Lantern-0.2, ExplosiveSpear-0.25, Spear-1
 dropwigBaitItems: DangleFruit-0.5, ExplosiveSpear-0.3, Spear-0.3, ScavengerBomb-0.5, Physalis-0.7, KarmaFlower-0.5
+Subregion: Fissures
+Subregion: Local Terminus
+Subregion: Cyclic Intake Manifold
+Subregion: Outer Expanse
+Subregion: Rapid Absorption Matrix
+Subregion: Calcis
 Room_Attr: JX_FALL04: Scavenger-Like,
 Room_Attr: JX_FALL05: Scavenger-Like,
+Room_Attr: JX_FALL19: Scavenger-Avoid,
 Room_Attr: JX_FALLTREASURE: Scavenger-Stay,
 Room_Attr: JX_RISE02: Centipede-Forbidden,SmallCentipede-Forbidden,Scavenger-Forbidden,DropBug-Forbidden,ZoopLizard-Forbidden,
+Room_Attr: JX_FALL20: Scavenger-Like,
