@@ -1,8 +1,9 @@
 using System.Collections.Generic;
 using System.Linq;
-using static UQLTerminus.RegionJukeboxRegistry;
 
 namespace UQLTerminus;
+
+using static RegionJukeboxRegistry;
 
 public class JukeboxResonance : UpdatableAndDeletable
 {
@@ -20,18 +21,25 @@ public class JukeboxResonance : UpdatableAndDeletable
         }
     }
 
+    public string ID {get; private set;}
     private bool _duplicate;
 
     public bool duplicate { get { return _duplicate; } private set { _duplicate = value; } }
 
-    private static readonly Dictionary<Room, HashSet<JukeboxResonance>> GlobalResonances = new();
+    private static readonly Dictionary<string, HashSet<JukeboxResonance>> GlobalResonances = new();
 
-    public static IEnumerable<JukeboxResonance> GetResonances(Room room)
+    public static IEnumerable<JukeboxResonance> GetResonances(string room)
     {
         if (!GlobalResonances.TryGetValue(room, out var list)) yield break;
 
         foreach (JukeboxResonance reso in list)
             if (!reso.duplicate) yield return reso;
+    }
+    public static IEnumerable<JukeboxResonance> GetResonancesOfID(string ID)
+    {
+        foreach(var list in GlobalResonances.Values)
+            foreach(JukeboxResonance reso in list)
+                if (reso.ID == ID) yield return reso;
     }
 
     private bool first = true;
@@ -40,11 +48,12 @@ public class JukeboxResonance : UpdatableAndDeletable
     public JukeboxResonance(PlacedObject placedObj)
     {
         data = placedObj.data as JukeboxResonanceData ?? new JukeboxResonanceData(placedObj);
+        ID = data.ID;
     }
     public override void Destroy()
     {
+        GlobalResonances[room.abstractRoom.name].Remove(this);
         base.Destroy();
-        GlobalResonances[room].Remove(this);
     }
 
     public override void Update(bool eu)
@@ -53,34 +62,83 @@ public class JukeboxResonance : UpdatableAndDeletable
 
         if (room == null) return;
 
-        if (first)
-        {
-            (GlobalResonances[room] =
-                GlobalResonances.TryGetValue(room, out var resonances)
-                ? resonances : new()).Add(this);
-            first = false;
-        }
-
         if (room.PlayersInRoom.Count == 0) return;
 
-        if (!data.owner.active) Destroy();
+        if (!data.owner.active) {
+            Destroy();
+            return;
+        }
 
         duplicate = room.roomSettings.placedObjects.Any(obj =>
             obj.data is JukeboxResonanceData resoData
-            && resoData.ID == data.ID
+            && resoData.ID == ID
             && resoData.owner != data.owner);
 
         if (duplicate) return;
-
-        RegionToJukeboxes.TryGetValue(room.world.region, out var jukeboxList);
-        var jukeboxInfo = jukeboxList?.FirstOrDefault(j => j.JukeboxID == data.ID);
+        
+        JukeboxInfo? jukeboxInfo = null;
+        RegionToJukeboxes.TryGetValue(room.world.region.name, out var jukeboxList);
+        if(jukeboxList != null)
+            jukeboxList.TryGetValue(ID, out jukeboxInfo);
+        
         var mic = room.game.cameras[0].virtualMicrophone;
+
+
+        if (first)
+        {
+            (GlobalResonances[room.abstractRoom.name] =
+                GlobalResonances.TryGetValue(room.abstractRoom.name, out var resonances)
+                ? resonances : new()).Add(this);
+        }
 
         if (jukeboxInfo == null)
         {
-            mic.ambientSoundPlayers.RemoveAll(test => test.GetType() == typeof(ReferencedOmni));
-            return;
-        }
+            AbstractRoom? foundRoom = null;
+            JukeboxObjectData? foundData = null;
+            if (first)
+            {
+                foreach (AbstractRoom abstractRoom in room.world.abstractRooms)
+                {
+                    RoomSettings settings = new RoomSettings(
+                        abstractRoom.name,
+                        room.world.region,
+                        false,
+                        false,
+                        room.game.TimelinePoint,
+                        room.game
+                    );
+
+                    foreach (PlacedObject obj in settings.placedObjects)
+                    {
+                        if (obj.data is JukeboxObjectData jdata && jdata.ID == ID)
+                        {
+                            foundRoom = abstractRoom;
+                            foundData = jdata;
+                            break;
+                        }
+                    }
+
+                    if (foundData != null)
+                        break;
+                }
+            }
+            if (foundRoom == null)
+            {
+                mic.ambientSoundPlayers.RemoveAll(test => test.GetType() == typeof(ReferencedOmni));
+                first = false;
+                return;
+            }
+            else
+            {
+                jukeboxInfo = JukeboxInfo.FromSave(
+                    foundData.ID,
+                    foundRoom.name,
+                    foundData.initiateWithPearl ? foundData.defaultPearl.value : "",
+                    room.game,
+                    true);
+                addJukebox(room.world.region.name, foundData.ID, () => jukeboxInfo);
+            }
+        } else if (first) ReloadSounds();
 
         foreach (AmbientSoundPlayer soundPlayer in mic.ambientSoundPlayers)
         {
@@ -88,7 +146,7 @@ public class JukeboxResonance : UpdatableAndDeletable
 
             if (!MultiFadeManager.isFading(sound, "configurationVolume"))
                 sound.configurationVolume = data.volume;
-            
+
             sound.volume = sound.hook.resonanceVolume * sound.configurationVolume;
 
             if (!MultiFadeManager.isFading(sound, "configurationPitch"))
@@ -96,19 +154,28 @@ public class JukeboxResonance : UpdatableAndDeletable
 
             sound.pitch = sound.hook.soundData.BeatScale * sound.configurationPitch;
         }
+
+        first = false;
     }
 
     public void ReloadSounds()
     {
         if (duplicate) return;
-        UQLTerminus.Log($"Reloading sounds for Jukebox Resonance of Jukebox {data.ID}");
+        UQLTerminus.Log($"Reloading sounds for Jukebox Resonance of Jukebox {ID}");
         var mic = room.game.cameras[0].virtualMicrophone;
-        RegionToJukeboxes.TryGetValue(room.world.region, out var jukeboxList);
-        var jukeboxInfo = jukeboxList?.FirstOrDefault(j => j.JukeboxID == data.ID);
+        
+        JukeboxInfo? jukeboxInfo = null;
+
+        RegionToJukeboxes.TryGetValue(room.world.region.name, out var jukeboxList);
+        if(jukeboxList != null)
+            jukeboxList.TryGetValue(ID, out jukeboxInfo);
+        
         if (jukeboxInfo == null) return;
 
+        UQLTerminus.Log("Found jukeboxInfo!");
+
         HashSet<ResonanceSound> existingSounds = new();
-        
+
         foreach (AmbientSoundPlayer soundPlayer in mic.ambientSoundPlayers)
         {
             if (!(soundPlayer.aSound is ReferencedOmni existOmni)) continue;

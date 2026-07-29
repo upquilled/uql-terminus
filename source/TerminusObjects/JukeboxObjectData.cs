@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 namespace UQLTerminus;
 
@@ -6,14 +7,12 @@ public class JukeboxObjectData : Pom.Pom.ManagedData
     [Pom.Pom.StringField("ID", "0")]
     internal string ID;
 
-    // unfinished
-
-    /* [Pom.Pom.BooleanField("initateWithPearl", false, displayName: "Start with Pearl")]
+    [Pom.Pom.BooleanField("initateWithPearl", false, displayName: "Start with Pearl")]
     internal bool initiateWithPearl;
 
     [Pom.Pom.ExtEnumField<DataPearl.AbstractDataPearl.DataPearlType>("defaultPearl", "JX_HALCYON", displayName: "Default Pearl")]
-    internal DataPearl.AbstractDataPearl.DataPearlType defaultPearl; */
-
+    internal DataPearl.AbstractDataPearl.DataPearlType defaultPearl;
+    
     [Pom.Pom.FloatField("volume", 0f, 1f, 0.5f, 0.01f, displayName: "Volume")]
     internal float volume;
 
@@ -35,5 +34,5 @@ public class JukeboxObjectData : Pom.Pom.ManagedData
     }
 
     public JukeboxObjectData(PlacedObject pObj) : base(pObj, null)
-    { }
+    {}
 }

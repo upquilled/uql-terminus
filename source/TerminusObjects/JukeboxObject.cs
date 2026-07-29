@@ -1,10 +1,14 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using RWCustom;
 using UnityEngine;
 
 namespace UQLTerminus;
+
+using static RegionJukeboxRegistry;
+using Random = UnityEngine.Random;
 
 public class JukeboxObject : UpdatableAndDeletable, IDrawable
 {
@@ -14,8 +18,11 @@ public class JukeboxObject : UpdatableAndDeletable, IDrawable
 
     private PearlSoundRefs? pearlSoundRefs;
 
-    private DataPearl? _pearl = null;
+    public string ID {get; private set;}
 
+    private DataPearl.AbstractDataPearl? queuedPearl = null;
+
+    private DataPearl? _pearl = null;
     private bool grabbedBefore = false;
 
     public bool isPlaying
@@ -37,7 +44,7 @@ public class JukeboxObject : UpdatableAndDeletable, IDrawable
 
     private void updatePearlStatus()
     {
-        if (Pearl?.AbstractPearl == null) return;
+        if (Pearl == null) return;
 
         if (!Hooks.PearlSoundsDict.TryGetValue(Pearl.AbstractPearl.dataPearlType, out pearlSoundRefs))
         return;
@@ -47,9 +54,9 @@ public class JukeboxObject : UpdatableAndDeletable, IDrawable
         var region = room?.world?.region;
         if (region == null) return;
 
-        if (RegionJukeboxRegistry.RegionToJukeboxes.TryGetValue(region, out var jukeboxList))
+        if (RegionToJukeboxes.TryGetValue(region.name, out var jukeboxList))
         {
-            var info = jukeboxList.Find(j => j.JukeboxID == data.ID);
+            jukeboxList.TryGetValue(ID, out JukeboxInfo? info);
             if (info != null)
             {
                 info.CurrentPearl = _pearl?.AbstractPearl.dataPearlType;
@@ -60,40 +67,61 @@ public class JukeboxObject : UpdatableAndDeletable, IDrawable
 
     private float beatScale = 0f;
 
+    private void FixatePearl()
+    {
+        if (Pearl == null) return;
+        Pearl.firstChunk.pos = placedObject.pos + Random.insideUnitCircle*data.PickUpRadius*0.5f;
+        Pearl.firstChunk.vel = Random.insideUnitCircle*data.PickUpRadius*0.25f;
+    }
+
     public JukeboxObject(Room room, PlacedObject placedObj) : base()
     {
         data = placedObj.data as JukeboxObjectData ?? new JukeboxObjectData(placedObj);
         placedObject = placedObj;
-        // will fix this later
-
-
-        /* if (data.initiateWithPearl)
-        {
-            WorldCoordinate coord = room.ToWorldCoordinate(placedObject.pos);
-            EntityID id = room.game.GetNewID();
-            var abstractPearl = new DataPearl.AbstractDataPearl(
-                room.world,                       // World
-                    AbstractPhysicalObject.AbstractObjectType.DataPearl,  // Type
-                    null,                             // Realized object (null for now)
-                    coord,                            // Position
-                    id,                               // ID
-                    room.abstractRoom.index,          // Origin Room Index
-                    -1,                               // PlacedObjectIndex (-1 if not applicable)
-                    null,                             // PlacedObject.ConsumableObjectData (optional)
-                    data.defaultPearl      // Pearl type (change as needed)
-            );
-            Pearl = new DataPearl(abstractPearl, room.world);
-            Pearl.firstChunk.pos = placedObj.pos;
-            room.AddObject(Pearl);
-        } */
-
+        ID = data.ID;
+        
         this.room = room;
 
         Region region = room.world.region;
 
-        (RegionJukeboxRegistry.RegionToJukeboxes[region] =
-            RegionJukeboxRegistry.RegionToJukeboxes.TryGetValue(region, out var jukebox) ? jukebox : null
-        ?? new List<RegionJukeboxRegistry.JukeboxInfo>()).Add(new RegionJukeboxRegistry.JukeboxInfo(this));
+        JukeboxInfo? info = null;
+
+        if (RegionToJukeboxes.TryGetValue(room.world.region.name, out var regionEntry))
+            regionEntry.TryGetValue(ID, out info);
+        
+        if ((info?.isPlaying ?? false) && !info.firstInit)
+        {
+            UQLTerminus.Log("Trying to adapt pearl position");
+            var abstractPearl = (DataPearl.AbstractDataPearl?) room.abstractRoom.entities.FirstOrDefault(
+                x => x is DataPearl.AbstractDataPearl pearl 
+                && pearl.dataPearlType == info.CurrentPearl);
+            if (abstractPearl != null) queuedPearl = abstractPearl;
+            else Pearl = null;
+        } else if (data.initiateWithPearl && (info?.firstInit ?? true))
+        {
+            WorldCoordinate coord = room.ToWorldCoordinate(placedObject.pos);
+            EntityID id = room.game.GetNewID();
+            var abstractPearl = new DataPearl.AbstractDataPearl(
+                room.world,
+                    AbstractPhysicalObject.AbstractObjectType.DataPearl,
+                    null,
+                    coord,
+                    id,
+                    room.abstractRoom.index,
+                    -1,
+                    null,
+                    data.defaultPearl
+            ){placedObjectIndex=room.roomSettings.placedObjects.IndexOf(placedObject)};
+            UQLTerminus.Log("Trying to spawn pearl");
+            room.abstractRoom.AddEntity(abstractPearl);
+            abstractPearl.RealizeInRoom();
+            room.AddObject(abstractPearl.realizedObject);
+            Pearl = (DataPearl) abstractPearl.realizedObject;
+            FixatePearl();
+            info?.firstInit = false;
+        }
+        if (info == null)
+            addJukebox(region.name, ID, () => new JukeboxInfo(this));
     }
 
     private void PearlUpdate()
@@ -105,7 +133,7 @@ public class JukeboxObject : UpdatableAndDeletable, IDrawable
             grabbedBefore = true;
             Pearl.firstChunk.vel *= Custom.LerpMap(Pearl.firstChunk.vel.magnitude, 1f, 6f, 0.999f, 0.999f-data.damping);
             Pearl.firstChunk.vel += Vector2.ClampMagnitude(placedObject.pos - Pearl.firstChunk.pos, 100f) / 100f * 0.4f * data.pullStrength;
-            Pearl.gravity = 0f;
+            Pearl.SetLocalGravity(0f);
             if (sameRoom) { MusicControl(); return; }
         }
         MusicStop(sameRoom);
@@ -147,7 +175,7 @@ public class JukeboxObject : UpdatableAndDeletable, IDrawable
 
                     }, 1));
 
-                Pearl.gravity = 0.9f;
+                Pearl.SetLocalGravity(0.9f);
                 beatScale = 0f;
             }
         }
@@ -157,7 +185,11 @@ public class JukeboxObject : UpdatableAndDeletable, IDrawable
     {
         base.Update(eu);
 
-        if (!data.owner.active) Destroy();
+        if (!data.owner.active)
+        {
+            Destroy();
+            return;
+        }
 
         int count = InvokeQueue.Count;
         for (int i = 0; i < count; i++)
@@ -175,6 +207,16 @@ public class JukeboxObject : UpdatableAndDeletable, IDrawable
         }
 
         if (data == null || room == null) return;
+
+        if (queuedPearl != null)
+        {
+            if (queuedPearl.realizedObject != null) {
+                Pearl = (DataPearl) queuedPearl.realizedObject;
+                FixatePearl();
+                queuedPearl = null;
+            }
+            return;
+        }
 
         if (Pearl == null)
         {
@@ -211,24 +253,19 @@ public class JukeboxObject : UpdatableAndDeletable, IDrawable
 
     public override void Destroy()
     {
-        base.Destroy();
         var region = room.world.region;
         if (region == null) return;
 
-        if (RegionJukeboxRegistry.RegionToJukeboxes.TryGetValue(region, out var jukeboxList))
+        if (RegionToJukeboxes.TryGetValue(region.name, out var jukeboxes))
         {
-            var infoToRemove = jukeboxList.Find(j => j.JukeboxID == data.ID);
+            jukeboxes.TryGetValue(ID, out JukeboxInfo? infoToRemove);
             if (infoToRemove != null)
-            {
-                jukeboxList.Remove(infoToRemove);
-            }
+                jukeboxes.Remove(ID);
 
-            if (jukeboxList.Count == 0)
-            {
-                RegionJukeboxRegistry.RegionToJukeboxes.Remove(region);
-            }
+            if (jukeboxes.Count == 0)
+                RegionToJukeboxes.Remove(region.name);
         }
-
+        base.Destroy();
     }
     public virtual void InitiateSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam)
     {
@@ -281,9 +318,9 @@ public class JukeboxObject : UpdatableAndDeletable, IDrawable
                 SoundLoader.SoundData soundData = camera.virtualMicrophone.GetSoundData(SoundID.Slugcat_Stash_Spear_On_Back, -1);
                 soundData.dontAutoPlay = true;
                 soundData.soundName = path;
-                VirtualMicrophone.PositionedSound positionedSound = new VirtualMicrophone.ObjectSound(camera.virtualMicrophone, soundData, loop, chunkSoundEmitter, vol, pitch, false);
-                positionedSound.singleUseSound = true;
-                _ = Application.dataPath;
+                VirtualMicrophone.PositionedSound positionedSound = 
+                    new VirtualMicrophone.ObjectSound(camera.virtualMicrophone, soundData, loop, chunkSoundEmitter, vol, pitch, false)
+                    {singleUseSound = true};
                 positionedSound.audioSource.clip = AssetManager.SafeWWWAudioClip("file://" + text4, threeD: false, stream: true, AudioType.OGGVORBIS);
                 camera.virtualMicrophone.soundObjects.Add(positionedSound);
             }

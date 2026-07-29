@@ -4,7 +4,7 @@ using System.IO;
 using System.Linq;
 using UnityEngine;
 namespace UQLTerminus;
-
+using static RegionJukeboxRegistry;
 public static class Hooks
 {
     public static readonly Dictionary<DataPearl.AbstractDataPearl.DataPearlType, PearlSoundRefs> PearlSoundsDict
@@ -94,9 +94,9 @@ public static class Hooks
             if (omni.hook.isActive())
             {
                 if (!existsReso) MultiFadeManager.FadeField(A, "volume", 0f,
-                    RegionJukeboxRegistry.ResonanceSound.shiftFadeDuration);
+                    ResonanceSound.shiftFadeDuration);
                 return true;
-            }
+            } omni.volume = 0f;
             return false;
         }
         return orig(self, A, B);
@@ -104,7 +104,7 @@ public static class Hooks
 
     private static void NewRoomBypass(On.VirtualMicrophone.orig_NewRoom orig, VirtualMicrophone self, Room room)
     {
-        var list = JukeboxResonance.GetResonances(room);
+        var list = JukeboxResonance.GetResonances(room.abstractRoom.name);
         existsReso = false;
         foreach (JukeboxResonance reso in list)
         {

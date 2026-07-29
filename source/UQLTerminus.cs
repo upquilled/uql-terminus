@@ -1,11 +1,17 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Linq;
 using System.Security;
 using BepInEx;
 using BepInEx.Logging;
+using UQLScribe.Registries;
+using static UQLScribe.UQLTag;
 
 [module: UnverifiableCode]
 
 namespace UQLTerminus;
+
+using static RegionJukeboxRegistry;
 
 [BepInPlugin("uql.terminus", "Local Terminus", "0.1.33")]
 public partial class UQLTerminus : BaseUnityPlugin
@@ -43,10 +49,70 @@ public partial class UQLTerminus : BaseUnityPlugin
         {
             IsInit = true;
             Hooks.Apply();
+            Registrar.Register(new SaveRegistry(this));
         }
         catch (Exception ex)
         {
             Logger.LogError(ex);
+        }
+    }
+
+    private class SaveRegistry(BaseUnityPlugin plugin) : IRegistry
+    {
+        public BaseUnityPlugin plugin {get; private set;} = plugin;
+
+        public void Load(Wrapper? wrapper, RainWorldGame? game)
+        {
+            if (wrapper == null) return;
+            if (game == null) return; // registry always loads on init, this should never happen
+
+            Compound[]? regions = ((NamedGroup) wrapper.compounds
+                .FirstOrDefault(x => x is NamedGroup group && group.label.val == "J")).compounds;
+
+            if (regions == null) return;
+
+            RegionToJukeboxes = new();
+            
+            foreach (var val in regions)
+            {
+                if (val is not NamedGroup regionEntry) continue;
+                string name = regionEntry.label.val;
+                foreach (var compound in regionEntry.compounds)
+                {
+                    if (compound is not Record jukeboxRecord) continue;
+                    bool firstInit = jukeboxRecord.entries.Length == 4;
+                    if (jukeboxRecord.entries.Length != 3 && !firstInit) continue;
+                    string id = ((Label) jukeboxRecord.entries[0]).val;
+                    string room = ((Label) jukeboxRecord.entries[1]).val;
+                    string pearl = ((Label) jukeboxRecord.entries[2]).val;
+                    Log($"Adding jukebox {id} from save data");
+                    addJukebox(name, id,
+                        () => JukeboxInfo.FromSave(id, room, pearl, game, firstInit));
+                }
+            }
+        }
+
+        public IEnumerable<Compound> Save()
+        {
+            List<NamedGroup> regions = new();
+            foreach (var pair in RegionToJukeboxes)
+            {
+                var jukeboxes = pair.Value.Values;
+                List<Record> records = new();
+                foreach (var jukebox in jukeboxes) {
+                    Label[] labels = [
+                            new Label(jukebox.JukeboxID),
+                            new Label(jukebox.room),
+                            new Label(jukebox.CurrentPearl?.value ?? "")
+                        ];
+                    records.Add(new Record(
+                        jukebox.firstInit ? labels.Append(new Label("")) : labels
+                    ));
+                }
+                regions.Add(new NamedGroup(new Label(pair.Key), records));
+            }
+            RegionToJukeboxes = new();
+            return [new NamedGroup(new Label("J"), regions)];
         }
     }
 

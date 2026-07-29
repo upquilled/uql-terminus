@@ -2,6 +2,8 @@ using static DataPearl.AbstractDataPearl;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System;
+using RegionKit.Modules.Particles.V1;
 
 namespace UQLTerminus;
 
@@ -13,9 +15,13 @@ public static class RegionJukeboxRegistry
         public string JukeboxID;
         public DataPearlType? CurrentPearl;
 
-        public Room room;
+        public bool firstInit {get; internal set;}
 
-        private bool _isPlaying;
+        public RainWorldGame game;
+
+        public string room;
+
+        private bool _isPlaying = false;
 
         public bool isPlaying
         {
@@ -28,9 +34,10 @@ public static class RegionJukeboxRegistry
         public JukeboxInfo(JukeboxObject jukebox)
         {
             JukeboxID = jukebox.data.ID;
-            room = jukebox.room;
+            room = jukebox.room.abstractRoom.name;
             CurrentPearl = jukebox.Pearl?.AbstractPearl.dataPearlType;
-            _isPlaying = jukebox.isPlaying;
+            isPlayingToAssign = jukebox.isPlaying;
+            game = jukebox.room.game;
         }
 
         public void updateResonance(bool playing)
@@ -42,14 +49,52 @@ public static class RegionJukeboxRegistry
                 resonances.Add(new ResonanceSound(CurrentPearl, this));
                 UQLTerminus.Log($"Found pearl resonance: {CurrentPearl.value}");
                 foreach (JukeboxResonance reso
-                            in JukeboxResonance.GetResonances(room))
+                            in JukeboxResonance.GetResonancesOfID(JukeboxID))
                     reso.ReloadSounds();
             }
             else if (resonances.Count > 0)
             {
-                resonances.Last().Stop();
+                resonances.Last().Stop(game);
             }
         }
+
+        public static JukeboxInfo FromSave(string id, string room, string pearl, RainWorldGame game, bool firstInit)
+        {
+            DataPearlType? CurrentPearl;
+
+            if (pearl == "")
+            {
+                CurrentPearl = null;
+            } else 
+            {
+                DataPearlType tryPearl =  new DataPearlType(pearl);
+                if (tryPearl.Index == -1) CurrentPearl = null;
+                else CurrentPearl = tryPearl;
+            }
+
+            bool isPlaying = pearl != "";
+
+            return new JukeboxInfo
+            {
+                JukeboxID = id,
+                room = room,
+                CurrentPearl = CurrentPearl,
+                game = game,
+                firstInit = firstInit,
+                isPlayingToAssign = isPlaying
+            };
+        }
+
+        public bool updateIsPlaying()
+        {
+            if (isPlayingToAssign == null) return false;
+            isPlaying = (bool) isPlayingToAssign;
+            return true;
+        }
+
+        private bool? isPlayingToAssign = null;
+
+        private JukeboxInfo() {}
     }
 
     public class ResonanceSound
@@ -78,17 +123,17 @@ public static class RegionJukeboxRegistry
             MultiFadeManager.FadeField(this, "resonanceVolume", soundData.Volume, fadeDuration);
         }
 
-        public void Stop()
+        public void Stop(RainWorldGame game)
         {
             MultiFadeManager.FadeField(this, "resonanceVolume", 0f, fadeDuration,
-                        onFinish: ImmediateStop);
+                        onFinish: () => ImmediateStop(game));
         }
 
-        public void ImmediateStop()
+        public void ImmediateStop(RainWorldGame game)
         {
             parent.resonances.Remove(this);
             _active = false;
-            parent.room.game.cameras[0].virtualMicrophone.ambientSoundPlayers.RemoveAll(x =>
+            game.cameras[0].virtualMicrophone.ambientSoundPlayers.RemoveAll(x =>
                 x.aSound is JukeboxResonance.ReferencedOmni omni
                 && omni.hook == this);
         }
@@ -98,5 +143,25 @@ public static class RegionJukeboxRegistry
             return _active;
         }
     }
-    public static readonly Dictionary<Region, List<JukeboxInfo>> RegionToJukeboxes = new();
+    public static Dictionary<string, Dictionary<string,JukeboxInfo>> RegionToJukeboxes = new();
+
+    public static bool addJukebox(string region, string id, Func<JukeboxInfo> infoFactory)
+    {
+        if (RegionToJukeboxes.TryGetValue(region, out var registered))
+        {
+            if (registered.ContainsKey(id))
+            {
+                 UQLTerminus.Log($"{id} already exists in Jukebox registry!");
+                 return false;
+            }
+        } else {
+            registered = RegionToJukeboxes[region] = new();
+        }
+        var info = infoFactory();
+        registered[id] = info;
+        info.updateIsPlaying();
+        UQLTerminus.Log($"new values for {region}: {string.Join(",",registered.Values.Select(x => x.JukeboxID))}");
+        return true;
+    }
+    
 }
