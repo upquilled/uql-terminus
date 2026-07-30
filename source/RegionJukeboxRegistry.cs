@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System;
-using RegionKit.Modules.Particles.V1;
 
 namespace UQLTerminus;
 
@@ -12,14 +11,14 @@ public static class RegionJukeboxRegistry
     public class JukeboxInfo
     {
 
-        public string JukeboxID;
+        public string JukeboxID = null!;
         public DataPearlType? CurrentPearl;
 
         public bool firstInit {get; internal set;}
 
-        public RainWorldGame game;
+        public RainWorldGame game = null!;
 
-        public string room;
+        public string room = null!;
 
         private bool _isPlaying = false;
 
@@ -46,7 +45,7 @@ public static class RegionJukeboxRegistry
             _isPlaying = playing;
             if (playing && CurrentPearl != null)
             {
-                resonances.Add(new ResonanceSound(CurrentPearl, this));
+                resonances.Add(new ResonanceSound(game, CurrentPearl, this));
                 UQLTerminus.Log($"Found pearl resonance: {CurrentPearl.value}");
                 foreach (JukeboxResonance reso
                             in JukeboxResonance.GetResonancesOfID(JukeboxID))
@@ -54,7 +53,7 @@ public static class RegionJukeboxRegistry
             }
             else if (resonances.Count > 0)
             {
-                resonances.Last().Stop(game);
+                resonances.Last().Stop();
             }
         }
 
@@ -106,6 +105,8 @@ public static class RegionJukeboxRegistry
         private bool _active = true;
         public DataPearlType pearlType;
 
+        public RainWorldGame game;
+
         public JukeboxInfo parent;
 
         public SoundData soundData;
@@ -115,21 +116,22 @@ public static class RegionJukeboxRegistry
             return Path.Combine("..", "..", "music", "songs", Hooks.PearlSoundsDict[pearlType].Approach.Path + ".ogg");
         }
 
-        public ResonanceSound(DataPearlType pearlType, JukeboxInfo info)
+        public ResonanceSound(RainWorldGame game, DataPearlType pearlType, JukeboxInfo info)
         {
             parent = info;
+            this.game = game;
             this.pearlType = pearlType;
             soundData = Hooks.PearlSoundsDict[pearlType].Approach;
-            MultiFadeManager.FadeField(this, "resonanceVolume", soundData.Volume, fadeDuration);
+            MultiFadeManager.FadeField(game, this, "resonanceVolume", soundData.Volume, fadeDuration);
         }
 
-        public void Stop(RainWorldGame game)
+        public void Stop()
         {
-            MultiFadeManager.FadeField(this, "resonanceVolume", 0f, fadeDuration,
-                        onFinish: () => ImmediateStop(game));
+            MultiFadeManager.FadeField(game, this, "resonanceVolume", 0f, fadeDuration,
+                        onFinish: () => ImmediateStop());
         }
 
-        public void ImmediateStop(RainWorldGame game)
+        public void ImmediateStop()
         {
             parent.resonances.Remove(this);
             _active = false;

@@ -126,6 +126,7 @@ public class JukeboxObject : UpdatableAndDeletable, IDrawable
 
     private void PearlUpdate()
     {
+        if (Pearl == null) return;
         bool sameRoom = room.PlayersInRoom.Count > 0;
         updatePearlStatus();
         if (Pearl.grabbedBy.Count == 0)
@@ -141,6 +142,7 @@ public class JukeboxObject : UpdatableAndDeletable, IDrawable
 
     private void MusicControl()
     {
+        if (pearlSoundRefs == null) return;
         if (room.game.manager.musicPlayer == null) return;
 
         if (room.game.manager.musicPlayer.song == null || room.game.manager.musicPlayer.song is not JukeboxSong)
@@ -158,6 +160,8 @@ public class JukeboxObject : UpdatableAndDeletable, IDrawable
 
     private void MusicStop(bool sameRoom)
     {
+        if (Pearl == null) return;
+        if (pearlSoundRefs == null) return;
         if (room.game.manager.musicPlayer != null && room.game.manager.musicPlayer.song != null && room.game.manager.musicPlayer.song is JukeboxSong)
         {
             room.game.manager.musicPlayer.song.FadeOut(5f);
@@ -276,7 +280,6 @@ public class JukeboxObject : UpdatableAndDeletable, IDrawable
 
     public void DrawSprites(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, float timeStacker, Vector2 camPos)
     {
-
         if (slatedForDeletetion || room != rCam.room)
         {
             sLeaser.CleanSpritesAndRemove();
@@ -284,7 +287,7 @@ public class JukeboxObject : UpdatableAndDeletable, IDrawable
         }
         bool showCondition = Pearl != null && Pearl.grabbedBy.Count == 0;
 
-        Vector2 vector = Vector2.Lerp(showCondition ? Pearl.firstChunk.lastPos : placedObject.pos, Pearl != null ? Pearl.firstChunk.lastPos : placedObject.pos, timeStacker) - camPos;
+        Vector2 vector = Vector2.Lerp(showCondition ? Pearl!.firstChunk.lastPos : placedObject.pos, Pearl != null ? Pearl.firstChunk.lastPos : placedObject.pos, timeStacker) - camPos;
         sLeaser.sprites[0].x = vector.x;
         sLeaser.sprites[0].y = vector.y;
         sLeaser.sprites[0].scale = beatScale * 0.75f;
@@ -308,9 +311,9 @@ public class JukeboxObject : UpdatableAndDeletable, IDrawable
 
     private static ChunkSoundEmitter? MusicChunkSound(BodyChunk chunk, string path, Room room, bool loop = false, float vol = 1f, float pitch = 1f)
     {
-        string text3 = Path.Combine("Music", "Songs", path + ".ogg");
-        string text4 = AssetManager.ResolveFilePath(text3);
-        if (!Application.isConsolePlatform && text4 != Path.Combine(Custom.RootFolderDirectory(), text3.ToLowerInvariant()) && File.Exists(text4))
+        string localPath = Path.Combine("Music", "Songs", path + ".ogg");
+        string truePath = AssetManager.ResolveFilePath(localPath);
+        if (!Application.isConsolePlatform && truePath != Path.Combine(Custom.RootFolderDirectory(), localPath.ToLowerInvariant()) && File.Exists(truePath))
         {
             ChunkSoundEmitter chunkSoundEmitter = new ChunkSoundEmitter(chunk, vol, pitch);
             foreach (RoomCamera camera in room.game.cameras)
@@ -321,12 +324,12 @@ public class JukeboxObject : UpdatableAndDeletable, IDrawable
                 VirtualMicrophone.PositionedSound positionedSound = 
                     new VirtualMicrophone.ObjectSound(camera.virtualMicrophone, soundData, loop, chunkSoundEmitter, vol, pitch, false)
                     {singleUseSound = true};
-                positionedSound.audioSource.clip = AssetManager.SafeWWWAudioClip("file://" + text4, threeD: false, stream: true, AudioType.OGGVORBIS);
+                positionedSound.audioSource.clip = AssetManager.SafeWWWAudioClip("file://" + truePath, threeD: false, stream: true, AudioType.OGGVORBIS);
                 camera.virtualMicrophone.soundObjects.Add(positionedSound);
             }
             return chunkSoundEmitter;
         }
-        UQLTerminus.LogWarning($"Loading sound {text4.Replace(Path.DirectorySeparatorChar, '/')} failed!");
+        UQLTerminus.LogWarning($"Loading sound {truePath.Replace(Path.DirectorySeparatorChar, '/')} failed!");
         return null;
     }
 }

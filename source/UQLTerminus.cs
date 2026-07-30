@@ -33,12 +33,17 @@ public partial class UQLTerminus : BaseUnityPlugin
     internal static void LogWarning(string message)
     {
         UnityEngine.Debug.LogWarning($"[Warning:{info.Metadata.Name}] " + message);
-    }    
+    }
+
+    internal static void LogError(string message)
+    {
+        UnityEngine.Debug.LogError($"[Error  :{info.Metadata.Name}] " + message);
+    }
 
     private bool IsInit;
 
-    internal static PluginInfo info;
-    internal static ManualLogSource logger;
+    internal static PluginInfo info = null!;
+    internal static ManualLogSource logger = null!;
 
     private void RainWorldOnOnModsInit(On.RainWorld.orig_OnModsInit orig, RainWorld self)
     {
@@ -64,7 +69,11 @@ public partial class UQLTerminus : BaseUnityPlugin
         public void Load(Wrapper? wrapper, RainWorldGame? game)
         {
             if (wrapper == null) return;
-            if (game == null) return; // registry always loads on init, this should never happen
+            if (game == null)
+            {
+               LogError("Game instance wasn't provided on save Load()! Was mod loaded late?");
+               return;
+            }
 
             Compound[]? regions = ((NamedGroup) wrapper.compounds
                 .FirstOrDefault(x => x is NamedGroup group && group.label.val == "J")).compounds;

@@ -131,7 +131,7 @@ public class JukeboxResonance : UpdatableAndDeletable
             else
             {
                 jukeboxInfo = JukeboxInfo.FromSave(
-                    foundData.ID,
+                    foundData!.ID,
                     foundRoom.name,
                     foundData.initiateWithPearl ? foundData.defaultPearl.value : "",
                     room.game,
@@ -184,10 +184,10 @@ public class JukeboxResonance : UpdatableAndDeletable
             MultiFadeManager.StopFade(existOmni, "volume");
             existOmni.configurationVolume = existOmni.hook.resonanceVolume == 0f
                                             ? 0f : existOmni.volume / existOmni.hook.resonanceVolume;
-            MultiFadeManager.FadeField(existOmni, "configurationVolume",
+            MultiFadeManager.FadeField(room.game, existOmni, "configurationVolume",
                 data.volume,
                 ResonanceSound.shiftFadeDuration);
-            MultiFadeManager.FadeField(existOmni, "configurationPitch",
+            MultiFadeManager.FadeField(room.game, existOmni, "configurationPitch",
                 data.pitch,
                 ResonanceSound.shiftFadeDuration);
         }
@@ -207,7 +207,7 @@ public class JukeboxResonance : UpdatableAndDeletable
                 pitch = sound.soundData.BeatScale * data.pitch
             };
 
-            MultiFadeManager.FadeField(realizedSound, "configurationVolume",
+            MultiFadeManager.FadeField(room.game, realizedSound, "configurationVolume",
                 data.volume,
                 ResonanceSound.shiftFadeDuration);
 

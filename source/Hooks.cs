@@ -93,7 +93,7 @@ public static class Hooks
         {
             if (omni.hook.isActive())
             {
-                if (!existsReso) MultiFadeManager.FadeField(A, "volume", 0f,
+                if (!existsReso) MultiFadeManager.FadeField(self.room.game, A, "volume", 0f,
                     ResonanceSound.shiftFadeDuration);
                 return true;
             } omni.volume = 0f;
