@@ -24,14 +24,6 @@ public class JukeboxObjectData : Pom.Pom.ManagedData
     [Pom.Pom.Vector2Field("pickupVector", 0f, 1f, reprType: Pom.Pom.Vector2Field.VectorReprType.circle)]
     internal Vector2 pickupVector;
 
-    internal float PickUpRadius
-    {
-        get
-        {
-            return pickupVector.magnitude;
-        }
-    }
-
-    public JukeboxObjectData(PlacedObject pObj) : base(pObj, null)
-    {}
+    internal float PickUpRadius => pickupVector.magnitude;
+    public JukeboxObjectData(PlacedObject pObj) : base(pObj, null) {}
 }

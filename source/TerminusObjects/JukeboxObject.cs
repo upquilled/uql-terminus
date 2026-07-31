@@ -44,12 +44,9 @@ public class JukeboxObject : UpdatableAndDeletable, IDrawable
 
     private void updatePearlStatus()
     {
-        if (Pearl == null) return;
-
-        if (!Hooks.PearlSoundsDict.TryGetValue(Pearl.AbstractPearl.dataPearlType, out pearlSoundRefs))
-        return;
-
-        // registry lookup
+        if (Pearl != null && !Hooks.PearlSoundsDict.TryGetValue(
+            Pearl.AbstractPearl.dataPearlType, out pearlSoundRefs))
+            return;
         
         var region = room?.world?.region;
         if (region == null) return;
@@ -249,10 +246,7 @@ public class JukeboxObject : UpdatableAndDeletable, IDrawable
                 grabbedBefore = false;
             }
         }
-        if (Pearl != null)
-        {
-            PearlUpdate();
-        }
+        if (Pearl != null) PearlUpdate();
     }
 
     public override void Destroy()
@@ -299,15 +293,12 @@ public class JukeboxObject : UpdatableAndDeletable, IDrawable
     public void AddToContainer(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, FContainer newContatiner)
     {
         if (newContatiner == null)
-        {
             newContatiner = rCam.ReturnFContainer("Items");
-        }
 
         newContatiner.AddChild(sLeaser.sprites[0]);
     }
 
-    public void ApplyPalette(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, RoomPalette palette)
-    { }
+    public void ApplyPalette(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, RoomPalette palette) {}
 
     private static ChunkSoundEmitter? MusicChunkSound(BodyChunk chunk, string path, Room room, bool loop = false, float vol = 1f, float pitch = 1f)
     {

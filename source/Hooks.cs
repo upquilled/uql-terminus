@@ -91,7 +91,7 @@ public static class Hooks
 
         if (A is JukeboxResonance.ReferencedOmni omni)
         {
-            if (omni.hook.isActive())
+            if (omni.hook.isActive)
             {
                 if (!existsReso) MultiFadeManager.FadeField(self.room.game, A, "volume", 0f,
                     ResonanceSound.shiftFadeDuration);

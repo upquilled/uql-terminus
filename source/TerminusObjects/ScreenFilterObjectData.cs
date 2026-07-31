@@ -16,15 +16,10 @@ public class ScreenFilterObjectData : Pom.Pom.ManagedData
 
 
     public int GetID()
-    {
-        return int.TryParse(ID, out var val) ? val : -1;
-    }
+        => int.TryParse(ID, out var val) ? val : -1;
 
     public int GetScreen()
-    {
-        return int.TryParse(Screen, out var val) ? val : -1;
-    }
+        => int.TryParse(Screen, out var val) ? val : -1;
 
-    public ScreenFilterObjectData(PlacedObject pObj) : base(pObj, null)
-    { }
+    public ScreenFilterObjectData(PlacedObject pObj) : base(pObj, null) {}
 }

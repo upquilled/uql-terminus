@@ -11,5 +11,5 @@ public class JukeboxResonanceData : Pom.Pom.ManagedData
 
     [Pom.Pom.FloatField("pitch", 0.1f, 1.89f, 1f, 0.01f, displayName: "Pitch")]
     public float pitch = 1f;
-    public JukeboxResonanceData(PlacedObject pObj) : base(pObj, null) { }
+    public JukeboxResonanceData(PlacedObject pObj) : base(pObj, null) {}
 }

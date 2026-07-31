@@ -16,9 +16,9 @@ public static class RegionJukeboxRegistry
 
         public bool firstInit {get; internal set;}
 
-        public RainWorldGame game = null!;
+        public RainWorldGame game {get; init;} = null!;
 
-        public string room = null!;
+        public string room {get; init;} = null!;
 
         private bool _isPlaying = false;
 
@@ -52,9 +52,7 @@ public static class RegionJukeboxRegistry
                     reso.ReloadSounds();
             }
             else if (resonances.Count > 0)
-            {
                 resonances.Last().Stop();
-            }
         }
 
         public static JukeboxInfo FromSave(string id, string room, string pearl, RainWorldGame game, bool firstInit)
@@ -62,9 +60,8 @@ public static class RegionJukeboxRegistry
             DataPearlType? CurrentPearl;
 
             if (pearl == "")
-            {
                 CurrentPearl = null;
-            } else 
+            else 
             {
                 DataPearlType tryPearl =  new DataPearlType(pearl);
                 if (tryPearl.Index == -1) CurrentPearl = null;
@@ -91,7 +88,7 @@ public static class RegionJukeboxRegistry
             return true;
         }
 
-        private bool? isPlayingToAssign = null;
+        private bool? isPlayingToAssign {get; init;} = null;
 
         private JukeboxInfo() {}
     }
@@ -102,7 +99,7 @@ public static class RegionJukeboxRegistry
         public const float shiftFadeDuration = 2.5f;
         public float resonanceVolume = 0f;
 
-        private bool _active = true;
+        public bool isActive {get; private set;} = true;
         public DataPearlType pearlType;
 
         public RainWorldGame game;
@@ -112,9 +109,8 @@ public static class RegionJukeboxRegistry
         public SoundData soundData;
 
         public string GetPath()
-        {
-            return Path.Combine("..", "..", "music", "songs", Hooks.PearlSoundsDict[pearlType].Approach.Path + ".ogg");
-        }
+            => Path.Combine("..", "..", "music", "songs",
+               Hooks.PearlSoundsDict[pearlType].Approach.Path + ".ogg");
 
         public ResonanceSound(RainWorldGame game, DataPearlType pearlType, JukeboxInfo info)
         {
@@ -126,23 +122,16 @@ public static class RegionJukeboxRegistry
         }
 
         public void Stop()
-        {
-            MultiFadeManager.FadeField(game, this, "resonanceVolume", 0f, fadeDuration,
-                        onFinish: () => ImmediateStop());
-        }
+            => MultiFadeManager.FadeField(game, this, "resonanceVolume", 0f,
+               fadeDuration, onFinish: () => ImmediateStop());
 
         public void ImmediateStop()
         {
             parent.resonances.Remove(this);
-            _active = false;
+            isActive = false;
             game.cameras[0].virtualMicrophone.ambientSoundPlayers.RemoveAll(x =>
                 x.aSound is JukeboxResonance.ReferencedOmni omni
                 && omni.hook == this);
-        }
-
-        public bool isActive()
-        {
-            return _active;
         }
     }
     public static Dictionary<string, Dictionary<string,JukeboxInfo>> RegionToJukeboxes = new();
@@ -156,9 +145,8 @@ public static class RegionJukeboxRegistry
                  UQLTerminus.Log($"{id} already exists in Jukebox registry!");
                  return false;
             }
-        } else {
-            registered = RegionToJukeboxes[region] = new();
-        }
+        } else registered = RegionToJukeboxes[region] = new();
+        
         var info = infoFactory();
         registered[id] = info;
         info.updateIsPlaying();

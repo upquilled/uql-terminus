@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using System.Security;
 using BepInEx;
@@ -26,21 +25,15 @@ public partial class UQLTerminus : BaseUnityPlugin
     }
 
     internal static void Log(string message)
-    {
-        UnityEngine.Debug.Log($"[Info   :{info.Metadata.Name}] " + message);
-    }
+        => UnityEngine.Debug.Log($"[Info   :{info.Metadata.Name}] " + message);
 
     internal static void LogWarning(string message)
-    {
-        UnityEngine.Debug.LogWarning($"[Warning:{info.Metadata.Name}] " + message);
-    }
+        => UnityEngine.Debug.LogWarning($"[Warning:{info.Metadata.Name}] " + message);
 
     internal static void LogError(string message)
-    {
-        UnityEngine.Debug.LogError($"[Error  :{info.Metadata.Name}] " + message);
-    }
+        => UnityEngine.Debug.LogError($"[Error  :{info.Metadata.Name}] " + message);
 
-    private bool IsInit;
+    private bool _initialized;
 
     internal static PluginInfo info = null!;
     internal static ManualLogSource logger = null!;
@@ -48,18 +41,12 @@ public partial class UQLTerminus : BaseUnityPlugin
     private void RainWorldOnOnModsInit(On.RainWorld.orig_OnModsInit orig, RainWorld self)
     {
         orig(self);
-        if (IsInit) return;
 
-        try
-        {
-            IsInit = true;
-            Hooks.Apply();
-            Registrar.Register(new SaveRegistry(this));
-        }
-        catch (Exception ex)
-        {
-            Logger.LogError(ex);
-        }
+        if (_initialized) return;
+
+        _initialized = true;
+        Hooks.Apply();
+        Registrar.Register(new SaveRegistry(this));
     }
 
     private class SaveRegistry(BaseUnityPlugin plugin) : IRegistry
@@ -75,7 +62,7 @@ public partial class UQLTerminus : BaseUnityPlugin
                return;
             }
 
-            Compound[]? regions = ((NamedGroup) wrapper.compounds
+            var regions = ((NamedGroup) wrapper.compounds
                 .FirstOrDefault(x => x is NamedGroup group && group.label.val == "J")).compounds;
 
             if (regions == null) return;
@@ -108,20 +95,21 @@ public partial class UQLTerminus : BaseUnityPlugin
             {
                 var jukeboxes = pair.Value.Values;
                 List<Record> records = new();
-                foreach (var jukebox in jukeboxes) {
-                    Label[] labels = [
-                            new Label(jukebox.JukeboxID),
-                            new Label(jukebox.room),
-                            new Label(jukebox.CurrentPearl?.value ?? "")
-                        ];
-                    records.Add(new Record(
-                        jukebox.firstInit ? labels.Append(new Label("")) : labels
-                    ));
-                }
-                regions.Add(new NamedGroup(new Label(pair.Key), records));
+                foreach (var jukebox in jukeboxes)
+                    records.Add(
+                        new Record(
+                            [
+                                jukebox.JukeboxID,
+                                jukebox.room,
+                                jukebox.CurrentPearl?.value ?? "",
+                                ..jukebox.firstInit ? [""] : (Label[])[]
+                            ]
+                        )
+                    );
+                regions.Add(new NamedGroup(pair.Key, records));
             }
             RegionToJukeboxes = new();
-            return [new NamedGroup(new Label("J"), regions)];
+            return [new NamedGroup("J", regions)];
         }
     }
 

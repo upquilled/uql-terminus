@@ -76,23 +76,18 @@ public static class MultiFadeManager
         if (activeFades.TryGetValue((targetObject, fieldName), out var entry))
         {
             if (entry.coroutine != null)
-            {
                 MultiFadeManagerRunner.Instance.StopCoroutine(entry.coroutine);
-            }
+
             activeFades.Remove((targetObject, fieldName));
             return true;
         } return false;
     }
 
     public static bool isFading(object targetObject, string fieldName)
-    {
-        return activeFades.ContainsKey((targetObject, fieldName));
-    }
+        => activeFades.ContainsKey((targetObject, fieldName));
 
     public static FadeEntry? GetFade(object targetObject, string fieldName)
-    {
-        return activeFades.TryGetValue((targetObject, fieldName), out var value) ? value : null;
-    }
+        => activeFades.TryGetValue((targetObject, fieldName), out var value) ? value : null;
 
 
     private class MultiFadeManagerRunner : MonoBehaviour

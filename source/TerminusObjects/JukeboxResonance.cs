@@ -20,11 +20,9 @@ public class JukeboxResonance : UpdatableAndDeletable
             configurationPitch = pitch;
         }
     }
+    public string ID {get; init;}
 
-    public string ID {get; private set;}
-    private bool _duplicate;
-
-    public bool duplicate { get { return _duplicate; } private set { _duplicate = value; } }
+    public bool duplicate {get; private set;}
 
     private static readonly Dictionary<string, HashSet<JukeboxResonance>> GlobalResonances = new();
 
@@ -85,11 +83,9 @@ public class JukeboxResonance : UpdatableAndDeletable
 
 
         if (first)
-        {
             (GlobalResonances[room.abstractRoom.name] =
                 GlobalResonances.TryGetValue(room.abstractRoom.name, out var resonances)
                 ? resonances : new()).Add(this);
-        }
 
         if (jukeboxInfo == null)
         {
