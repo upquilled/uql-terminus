@@ -109,7 +109,7 @@ public static class Hooks
         foreach (JukeboxResonance reso in list)
         {
             existsReso = true;
-            reso.ReloadSounds();
+            reso.ReloadSounds(null);
         }
         orig(self, room);
     }
@@ -126,7 +126,7 @@ public static class Hooks
     private static class LightSourcePatch
     {
 
-        private static readonly HashSet<LightSource> dirty = new();
+        private static readonly HashSet<LightSource> dirty = [];
         private static System.Reflection.FieldInfo shaderDirtyField =
         typeof(LightSource).GetField("shaderDirty",
             System.Reflection.BindingFlags.Public |

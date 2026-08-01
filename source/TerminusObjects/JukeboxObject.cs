@@ -12,7 +12,7 @@ using Random = UnityEngine.Random;
 
 public class JukeboxObject : UpdatableAndDeletable, IDrawable
 {
-    private Queue<(Action action, int delay)> InvokeQueue = new();
+    private readonly Queue<(Action action, int delay)> InvokeQueue = [];
     public JukeboxObjectData data;
     private PlacedObject placedObject;
 
@@ -25,13 +25,7 @@ public class JukeboxObject : UpdatableAndDeletable, IDrawable
     private DataPearl? _pearl = null;
     private bool grabbedBefore = false;
 
-    public bool isPlaying
-    {
-        get
-        {
-            return Pearl == null ? false : Pearl.grabbedBy.Count == 0;
-        }
-    }
+    public bool isPlaying => Pearl?.grabbedBy.Count == 0;
 
     public DataPearl? Pearl
     {
@@ -44,17 +38,17 @@ public class JukeboxObject : UpdatableAndDeletable, IDrawable
 
     private void updatePearlStatus()
     {
-        if (Pearl != null && !Hooks.PearlSoundsDict.TryGetValue(
+        if (Pearl is not null && !Hooks.PearlSoundsDict.TryGetValue(
             Pearl.AbstractPearl.dataPearlType, out pearlSoundRefs))
             return;
         
         var region = room?.world?.region;
-        if (region == null) return;
+        if (region is null) return;
 
         if (RegionToJukeboxes.TryGetValue(region.name, out var jukeboxList))
         {
             jukeboxList.TryGetValue(ID, out JukeboxInfo? info);
-            if (info != null)
+            if (info is not null)
             {
                 info.CurrentPearl = _pearl?.AbstractPearl.dataPearlType;
                 info.isPlaying = isPlaying;
@@ -66,14 +60,14 @@ public class JukeboxObject : UpdatableAndDeletable, IDrawable
 
     private void FixatePearl()
     {
-        if (Pearl == null) return;
+        if (Pearl is null) return;
         Pearl.firstChunk.pos = placedObject.pos + Random.insideUnitCircle*data.PickUpRadius*0.5f;
         Pearl.firstChunk.vel = Random.insideUnitCircle*data.PickUpRadius*0.25f;
     }
 
     public JukeboxObject(Room room, PlacedObject placedObj) : base()
     {
-        data = placedObj.data as JukeboxObjectData ?? new JukeboxObjectData(placedObj);
+        data = placedObj.data as JukeboxObjectData ?? new(placedObj);
         placedObject = placedObj;
         ID = data.ID;
         
@@ -86,13 +80,13 @@ public class JukeboxObject : UpdatableAndDeletable, IDrawable
         if (RegionToJukeboxes.TryGetValue(room.world.region.name, out var regionEntry))
             regionEntry.TryGetValue(ID, out info);
         
-        if ((info?.isPlaying ?? false) && !info.firstInit)
+        if (info?.isPlaying is true && !info.firstInit)
         {
             UQLTerminus.Log("Trying to adapt pearl position");
             var abstractPearl = (DataPearl.AbstractDataPearl?) room.abstractRoom.entities.FirstOrDefault(
                 x => x is DataPearl.AbstractDataPearl pearl 
                 && pearl.dataPearlType == info.CurrentPearl);
-            if (abstractPearl != null) queuedPearl = abstractPearl;
+            if (abstractPearl is not null) queuedPearl = abstractPearl;
             else Pearl = null;
         } else if (data.initiateWithPearl && (info?.firstInit ?? true))
         {
@@ -117,51 +111,57 @@ public class JukeboxObject : UpdatableAndDeletable, IDrawable
             FixatePearl();
             info?.firstInit = false;
         }
-        if (info == null)
+        if (info is null)
             addJukebox(region.name, ID, () => new JukeboxInfo(this));
     }
 
     private void PearlUpdate()
     {
-        if (Pearl == null) return;
+        if (Pearl is null) return;
         bool sameRoom = room.PlayersInRoom.Count > 0;
-        updatePearlStatus();
         if (Pearl.grabbedBy.Count == 0)
         {
-            grabbedBefore = true;
+            if (!grabbedBefore)
+                grabbedBefore = true;
+            Pearl.SetLocalGravity(0f);
             Pearl.firstChunk.vel *= Custom.LerpMap(Pearl.firstChunk.vel.magnitude, 1f, 6f, 0.999f, 0.999f-data.damping);
             Pearl.firstChunk.vel += Vector2.ClampMagnitude(placedObject.pos - Pearl.firstChunk.pos, 100f) / 100f * 0.4f * data.pullStrength;
-            Pearl.SetLocalGravity(0f);
-            if (sameRoom) { MusicControl(); return; }
+            if (sameRoom) {
+                if (room.game.GameOverModeActive) MusicStop(false);
+                else MusicControl();
+                return;
+            }
         }
         MusicStop(sameRoom);
     }
 
     private void MusicControl()
     {
-        if (pearlSoundRefs == null) return;
-        if (room.game.manager.musicPlayer == null) return;
+        if (pearlSoundRefs is null) return;
+        var player = room.game.manager.musicPlayer;
+        if (player is null) return;
 
-        if (room.game.manager.musicPlayer.song == null || room.game.manager.musicPlayer.song is not JukeboxSong)
+        if (player.song is null or not JukeboxSong)
         {
-            JukeboxSong.Request(room.game.manager.musicPlayer, pearlSoundRefs.Play.Path, pearlSoundRefs.Play.Volume * data.volume);
+            JukeboxSong.Request(player, pearlSoundRefs.Play.Path, pearlSoundRefs.Play.Volume * data.volume);
             return;
         }
 
         float[] array = new float[1024];
         float num = 0f;
-        if (room.game.manager.musicPlayer.song is JukeboxSong) room.game.manager.musicPlayer.song.subTracks[0].source.GetSpectrumData(array, 0, (FFTWindow)2);
+        if (player.song is JukeboxSong) player.song.subTracks[0].source.GetSpectrumData(array, 0, (FFTWindow)2);
         for (int i = 0; i < 1024; i++) num += array[i];
         beatScale = Mathf.Clamp(num * pearlSoundRefs.Play.BeatScale / pearlSoundRefs.Play.Volume / data.volume, 0f, 1f);
     }
 
     private void MusicStop(bool sameRoom)
     {
-        if (Pearl == null) return;
-        if (pearlSoundRefs == null) return;
-        if (room.game.manager.musicPlayer != null && room.game.manager.musicPlayer.song != null && room.game.manager.musicPlayer.song is JukeboxSong)
+        if (Pearl is null) return;
+        if (pearlSoundRefs is null) return;
+        var song = room.game.manager.musicPlayer?.song;
+        if (song is JukeboxSong)
         {
-            room.game.manager.musicPlayer.song.FadeOut(5f);
+            song.FadeOut(5f);
             if (sameRoom)
             {
                 if (grabbedBefore) InvokeQueue.Enqueue((
@@ -207,21 +207,20 @@ public class JukeboxObject : UpdatableAndDeletable, IDrawable
             InvokeQueue.Enqueue(item);
         }
 
-        if (data == null || room == null) return;
+        if (data is null || room is null) return;
 
-        if (queuedPearl != null)
+        if (queuedPearl is not null)
         {
-            if (queuedPearl.realizedObject != null) {
-                Pearl = (DataPearl) queuedPearl.realizedObject;
+            if (queuedPearl.realizedObject is DataPearl realizedPearl) {
+                Pearl = realizedPearl;
                 FixatePearl();
                 queuedPearl = null;
             }
             return;
         }
 
-        if (Pearl == null)
+        if (Pearl is null)
         {
-
             DataPearl.AbstractDataPearl? closestPearl = null;
             float closestDistance = data.PickUpRadius;
 
@@ -229,8 +228,7 @@ public class JukeboxObject : UpdatableAndDeletable, IDrawable
             {
                 if (entity is DataPearl.AbstractDataPearl pearl &&
                     Hooks.PearlSoundsDict.ContainsKey(pearl.dataPearlType) &&
-                    pearl.realizedObject != null &&
-                    pearl.realizedObject.room == room && pearl.realizedObject.grabbedBy.Count == 0)
+                    pearl.realizedObject?.room == room && pearl.realizedObject.grabbedBy.Count == 0)
                 {
                     float distance = Vector2.Distance(pearl.realizedObject.firstChunk.pos, placedObject.pos);
                     if (distance < closestDistance)
@@ -240,24 +238,24 @@ public class JukeboxObject : UpdatableAndDeletable, IDrawable
                     }
                 }
             }
-            if (closestPearl != null && closestPearl.realizedObject is DataPearl realizedPearl)
+            if (closestPearl?.realizedObject is DataPearl realizedPearl)
             {
                 Pearl = realizedPearl;
                 grabbedBefore = false;
             }
         }
-        if (Pearl != null) PearlUpdate();
+        if (Pearl is not null) PearlUpdate();
     }
 
     public override void Destroy()
     {
         var region = room.world.region;
-        if (region == null) return;
+        if (region is null) return;
 
         if (RegionToJukeboxes.TryGetValue(region.name, out var jukeboxes))
         {
             jukeboxes.TryGetValue(ID, out JukeboxInfo? infoToRemove);
-            if (infoToRemove != null)
+            if (infoToRemove is not null)
                 jukeboxes.Remove(ID);
 
             if (jukeboxes.Count == 0)
@@ -279,9 +277,10 @@ public class JukeboxObject : UpdatableAndDeletable, IDrawable
             sLeaser.CleanSpritesAndRemove();
             return;
         }
-        bool showCondition = Pearl != null && Pearl.grabbedBy.Count == 0;
+        bool showCondition = Pearl?.grabbedBy.Count == 0;
 
-        Vector2 vector = Vector2.Lerp(showCondition ? Pearl!.firstChunk.lastPos : placedObject.pos, Pearl != null ? Pearl.firstChunk.lastPos : placedObject.pos, timeStacker) - camPos;
+        Vector2 vector = Vector2.Lerp(showCondition ? Pearl!.firstChunk.lastPos : placedObject.pos, 
+            Pearl is not null ? Pearl.firstChunk.lastPos : placedObject.pos, timeStacker) - camPos;
         sLeaser.sprites[0].x = vector.x;
         sLeaser.sprites[0].y = vector.y;
         sLeaser.sprites[0].scale = beatScale * 0.75f;
@@ -292,7 +291,7 @@ public class JukeboxObject : UpdatableAndDeletable, IDrawable
 
     public void AddToContainer(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, FContainer newContatiner)
     {
-        if (newContatiner == null)
+        if (newContatiner is null)
             newContatiner = rCam.ReturnFContainer("Items");
 
         newContatiner.AddChild(sLeaser.sprites[0]);
@@ -300,11 +299,13 @@ public class JukeboxObject : UpdatableAndDeletable, IDrawable
 
     public void ApplyPalette(RoomCamera.SpriteLeaser sLeaser, RoomCamera rCam, RoomPalette palette) {}
 
-    private static ChunkSoundEmitter? MusicChunkSound(BodyChunk chunk, string path, Room room, bool loop = false, float vol = 1f, float pitch = 1f)
+    private static ChunkSoundEmitter? MusicChunkSound(BodyChunk chunk, string path, Room room,
+        bool loop = false, float vol = 1f, float pitch = 1f)
     {
         string localPath = Path.Combine("Music", "Songs", path + ".ogg");
         string truePath = AssetManager.ResolveFilePath(localPath);
-        if (!Application.isConsolePlatform && truePath != Path.Combine(Custom.RootFolderDirectory(), localPath.ToLowerInvariant()) && File.Exists(truePath))
+        if (!Application.isConsolePlatform && truePath != Path.Combine(Custom.RootFolderDirectory(),
+            localPath.ToLowerInvariant()) && File.Exists(truePath))
         {
             ChunkSoundEmitter chunkSoundEmitter = new ChunkSoundEmitter(chunk, vol, pitch);
             foreach (RoomCamera camera in room.game.cameras)
@@ -313,9 +314,11 @@ public class JukeboxObject : UpdatableAndDeletable, IDrawable
                 soundData.dontAutoPlay = true;
                 soundData.soundName = path;
                 VirtualMicrophone.PositionedSound positionedSound = 
-                    new VirtualMicrophone.ObjectSound(camera.virtualMicrophone, soundData, loop, chunkSoundEmitter, vol, pitch, false)
+                    new VirtualMicrophone.ObjectSound(camera.virtualMicrophone, soundData,
+                        loop, chunkSoundEmitter, vol, pitch, false)
                     {singleUseSound = true};
-                positionedSound.audioSource.clip = AssetManager.SafeWWWAudioClip("file://" + truePath, threeD: false, stream: true, AudioType.OGGVORBIS);
+                positionedSound.audioSource.clip = AssetManager.SafeWWWAudioClip("file://" + truePath, 
+                    threeD: false, stream: true, AudioType.OGGVORBIS);
                 camera.virtualMicrophone.soundObjects.Add(positionedSound);
             }
             return chunkSoundEmitter;

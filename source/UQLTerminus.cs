@@ -55,8 +55,8 @@ public partial class UQLTerminus : BaseUnityPlugin
 
         public void Load(Wrapper? wrapper, RainWorldGame? game)
         {
-            if (wrapper == null) return;
-            if (game == null)
+            if (wrapper is null) return;
+            if (game is null)
             {
                LogError("Game instance wasn't provided on save Load()! Was mod loaded late?");
                return;
@@ -65,9 +65,9 @@ public partial class UQLTerminus : BaseUnityPlugin
             var regions = ((NamedGroup) wrapper.compounds
                 .FirstOrDefault(x => x is NamedGroup group && group.label.val == "J")).compounds;
 
-            if (regions == null) return;
+            if (regions is null) return;
 
-            RegionToJukeboxes = new();
+            RegionToJukeboxes = [];
             
             foreach (var val in regions)
             {
@@ -90,11 +90,11 @@ public partial class UQLTerminus : BaseUnityPlugin
 
         public IEnumerable<Compound> Save()
         {
-            List<NamedGroup> regions = new();
+            List<NamedGroup> regions = [];
             foreach (var pair in RegionToJukeboxes)
             {
                 var jukeboxes = pair.Value.Values;
-                List<Record> records = new();
+                List<Record> records = [];
                 foreach (var jukebox in jukeboxes)
                     records.Add(
                         new Record(
@@ -108,7 +108,7 @@ public partial class UQLTerminus : BaseUnityPlugin
                     );
                 regions.Add(new NamedGroup(pair.Key, records));
             }
-            RegionToJukeboxes = new();
+            RegionToJukeboxes = [];
             return [new NamedGroup("J", regions)];
         }
     }

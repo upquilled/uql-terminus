@@ -14,7 +14,7 @@ public class ScreenFilterObject : UpdatableAndDeletable
 
 	public ScreenFilterObject(Room room, PlacedObject placedObj) : base()
 	{
-		data = placedObj.data as ScreenFilterObjectData ?? new ScreenFilterObjectData(placedObj);
+		data = placedObj.data as ScreenFilterObjectData ?? new(placedObj);
 		placedObject = placedObj;
 		occupiedRoom = room;
 	}

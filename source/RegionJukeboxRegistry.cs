@@ -43,13 +43,13 @@ public static class RegionJukeboxRegistry
         {
             if (_isPlaying == playing) return;
             _isPlaying = playing;
-            if (playing && CurrentPearl != null)
+            if (playing && CurrentPearl is not null)
             {
                 resonances.Add(new ResonanceSound(game, CurrentPearl, this));
                 UQLTerminus.Log($"Found pearl resonance: {CurrentPearl.value}");
                 foreach (JukeboxResonance reso
                             in JukeboxResonance.GetResonancesOfID(JukeboxID))
-                    reso.ReloadSounds();
+                    reso.ReloadSounds(this);
             }
             else if (resonances.Count > 0)
                 resonances.Last().Stop();
@@ -83,7 +83,7 @@ public static class RegionJukeboxRegistry
 
         public bool updateIsPlaying()
         {
-            if (isPlayingToAssign == null) return false;
+            if (isPlayingToAssign is null) return false;
             isPlaying = (bool) isPlayingToAssign;
             return true;
         }
@@ -134,7 +134,7 @@ public static class RegionJukeboxRegistry
                 && omni.hook == this);
         }
     }
-    public static Dictionary<string, Dictionary<string,JukeboxInfo>> RegionToJukeboxes = new();
+    public static Dictionary<string, Dictionary<string,JukeboxInfo>> RegionToJukeboxes = [];
 
     public static bool addJukebox(string region, string id, Func<JukeboxInfo> infoFactory)
     {
@@ -145,7 +145,7 @@ public static class RegionJukeboxRegistry
                  UQLTerminus.Log($"{id} already exists in Jukebox registry!");
                  return false;
             }
-        } else registered = RegionToJukeboxes[region] = new();
+        } else registered = RegionToJukeboxes[region] = [];
         
         var info = infoFactory();
         registered[id] = info;

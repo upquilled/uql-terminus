@@ -7,7 +7,7 @@
 	"requirements": [ "myr.chasing_wind", "uql.extra" ],
 	"requirements_names": ["Chasing Wind", "Extra Parameters" ],
 	"tags": [ "Regions" ],
-	"checksum_override_version": true,
+	"checksum_override_version": false,
 	"uql.extra": {
 		"exclude_steam": [
 				"fairypresets/*",

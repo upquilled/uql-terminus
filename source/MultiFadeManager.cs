@@ -16,20 +16,20 @@ public static class MultiFadeManager
 
         internal void setCoroutine(RainWorldGame game, object targetObject, FieldInfo field, (object, string) key)
         {
-            if (coroutine != null) return;
+            if (coroutine is not null) return;
             coroutine = MultiFadeManagerRunner.Instance.StartCoroutine(FadeCoroutine(game, targetObject, field, this, key));
         }
     }
 
-    private static Dictionary<(object, string), FadeEntry> activeFades = new();
+    private static readonly Dictionary<(object, string), FadeEntry> activeFades = [];
 
     public static void FadeField(RainWorldGame game, object targetObject, string fieldName, float targetValue, float duration, Func<float, float>? smooth = null, Action? onFinish = null)
     {
-        if (smooth == null) smooth = t => t;
-        if (onFinish == null) onFinish = () => {};
+        if (smooth is null) smooth = t => t;
+        if (onFinish is null) onFinish = () => {};
 
         FieldInfo field = targetObject.GetType().GetField(fieldName, BindingFlags.Instance | BindingFlags.Public);
-        if (field == null) throw new ArgumentException($"Field '{fieldName}' not found on object of type {targetObject.GetType().Name}");
+        if (field is null) throw new ArgumentException($"Field '{fieldName}' not found on object of type {targetObject.GetType().Name}");
 
         float startValue = field.GetValue(targetObject) is float val ? val : 0f;
 
@@ -75,7 +75,7 @@ public static class MultiFadeManager
     {
         if (activeFades.TryGetValue((targetObject, fieldName), out var entry))
         {
-            if (entry.coroutine != null)
+            if (entry.coroutine is not null)
                 MultiFadeManagerRunner.Instance.StopCoroutine(entry.coroutine);
 
             activeFades.Remove((targetObject, fieldName));
@@ -98,7 +98,7 @@ public static class MultiFadeManager
         {
             get
             {
-                if (_instance == null)
+                if (_instance is null)
                 {
                     GameObject go = new GameObject("MultiFadeManager");
                     _instance = go.AddComponent<MultiFadeManagerRunner>();

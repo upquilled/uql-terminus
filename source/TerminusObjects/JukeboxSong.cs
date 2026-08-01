@@ -18,10 +18,12 @@ public class JukeboxSong : Song
 
     public static void Request(MusicPlayer musicPlayer, string songName, float volume)
     {
-        if ((musicPlayer.song == null || !(musicPlayer.song is JukeboxSong)) && (musicPlayer.nextSong == null || !(musicPlayer.nextSong is JukeboxSong)) && musicPlayer.manager.rainWorld.setup.playMusic)
+        if (musicPlayer.song is not JukeboxSong
+            && musicPlayer.nextSong is not JukeboxSong
+            && musicPlayer.manager.rainWorld.setup.playMusic)
         {
             Song song = new JukeboxSong(musicPlayer, songName, volume);
-            if (musicPlayer.song == null)
+            if (musicPlayer.song is null)
             {
                 musicPlayer.song = song;
                 musicPlayer.song.playWhenReady = true;
